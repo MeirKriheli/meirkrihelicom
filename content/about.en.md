@@ -3,6 +3,8 @@ title: "About"
 date: 2022-03-30T16:15:51+03:00
 slug: about
 description: About Meir Kriheli
+type: page
+menu: main
 ---
 
 My name is Meir Kriheli, an experienced freelancer, software developer, system
