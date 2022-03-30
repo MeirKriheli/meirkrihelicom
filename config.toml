@@ -14,8 +14,10 @@ enableRobotsTXT = true
   [languages.he]
     languageDirection = "rtl"
     weight = 1
+    contentDir = "content/he"
   [languages.en]
     weight = 2
+    contentDir = "content/en"
 
 
 [[params.ananke_socials]]
