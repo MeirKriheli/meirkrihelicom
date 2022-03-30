@@ -1,0 +1,41 @@
+baseURL = 'https://meirkriheli.com'
+languageCode = 'he'
+title = 'Meir Kriheli'
+theme = 'ananke'
+defaultContentLanguage = 'he'
+SectionPagesMenu = "main"
+googleAnalytics = ""
+enableRobotsTXT = true
+
+[permalinks]
+  posts = '/:year/:month/:slug/'
+
+[languages]
+  [languages.he]
+    languageDirection = "rtl"
+    weight = 1
+  [languages.en]
+    weight = 2
+
+
+[[params.ananke_socials]]
+name = "twitter"
+url = "https://twitter.com/mkriheli"
+
+[[params.ananke_socials]]
+name = "github"
+url = "https://github.com/MeirKriheli"
+
+[[params.ananke_socials]]
+name = "linkedin"
+url = "https://www.linkedin.com/in/meirkriheli"
+
+
+[outputFormats]
+  [outputFormats.RSS]
+    mediaType = "application/rss"
+    baseName = "feed"
+
+[mediaTypes]
+[mediaTypes."application/rss"]
+suffixes = ["rss"]
