@@ -14,6 +14,8 @@ Before going solo, I've been a partner at MKsoft systems for 16 years, doing
 software development (backend and frontend), web application development and 
 services to organizations, including servers setup, maintenance and consulting.
 
+After many years as a freelancer, I became an employee.
+
 Development
 -----------
 
