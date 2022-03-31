@@ -1,0 +1,43 @@
+.bg-solarized {
+	background-color: #fdf6e3;
+}
+
+.fg-solarized {
+	color: #586e75;
+}
+
+main h1, main h2, main h3, main h4, main h5 {
+	color: #cb4b16;
+}
+
+@font-face {
+    font-family: 'Alef';
+    src: url('/font/Alef-bold.eot');
+    src: url('/font/Alef-bold.eot?#iefix') format('embedded-opentype'),
+         url('/font/Alef-bold.woff') format('woff'),
+         url('/font/Alef-bold.ttf') format('truetype'),
+         url('/font/Alef-bold.svg#alefbold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Alef';
+    src: url('/font/Alef-regular.eot');
+    src: url('/font/Alef-regular.eot?#iefix') format('embedded-opentype'),
+         url('/font/Alef-regular.woff') format('woff'),
+         url('/font/Alef-regular.ttf') format('truetype'),
+         url('/font/Alef-regular.svg#alefregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.alef {
+  font-family: avenir next,avenir,sans-serif;
+}
+
+[dir="rtl"] .alef {
+  font-family: Alef,sans-serif;
+}
+

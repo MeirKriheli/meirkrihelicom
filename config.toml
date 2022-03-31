@@ -20,9 +20,10 @@ enableRobotsTXT = true
     contentDir = "content/en"
 
 [params]
-  body_classes = "avenir bg-solarized"
-  custom_css = ["solarized.css"]
+  body_classes = "alef bg-solarized"
+  custom_css = ["meir.css"]
   text_color = "fg-solarized"
+  post_content_classes = "alef"
 
 
 [[params.ananke_socials]]
