@@ -15,16 +15,9 @@ enableRobotsTXT = true
     languageDirection = "rtl"
     weight = 1
     contentDir = "content/he"
-  [[languages.he.menu.main]]
-     identifier = "posts"
-     name = "בלוג"
   [languages.en]
     weight = 2
     contentDir = "content/en"
-  [[languages.en.menu.main]]
-     identifier = "posts"
-     name = "Blog"
-
 
 [[params.ananke_socials]]
 name = "twitter"
