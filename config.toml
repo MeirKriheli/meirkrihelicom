@@ -19,6 +19,12 @@ enableRobotsTXT = true
     weight = 2
     contentDir = "content/en"
 
+[params]
+  body_classes = "avenir bg-solarized"
+  custom_css = ["solarized.css"]
+  text_color = "fg-solarized"
+
+
 [[params.ananke_socials]]
 name = "twitter"
 url = "https://twitter.com/mkriheli"
