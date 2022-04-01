@@ -11,16 +11,18 @@ tags:
 summary: >
     Talk regarding Sphinx document generator which I gave at PyWeb-IL 34
     Perl Mongers Tel-Aviv meeting at 03/2012.
-draft: true
 ---
 
-Sphinx_ is an extensible document generator written in Python and uses
-reStructuredText_ as it's markup language. It creates intelligent and beautiful
-documentation, and has support for documenting several programming languages,
-different output formats, cross-references, Hierarchical structure, Automatic
-indices and Syntax Highlighting.
+[Sphinx](http://sphinx.pocoo.org/) is an extensible document generator written
+in Python and uses [reStructuredText](http://docutils.sf.net/rst.html) as it's
+markup language. It creates intelligent and beautiful documentation, and has
+support for documenting several programming languages, different output formats,
+cross-references, Hierarchical structure, Automatic indices and Syntax
+Highlighting.
 
-I gave a talk about it at `PyWeb-IL 34`_ and (with some modifications) at
-`Perl Mongers Tel-Aviv`_ meeting at 03/2012.
+I gave a talk about it at [PyWeb-IL 34](http://whatsup.org.il/article/6973) and
+(with some modifications) at [Perl Mongers Tel-Aviv](http://telaviv.pm.org/previous.html#meeting_mar_28_2012)
+meeting at 03/2012.
 
-The `slides about Sphinx`_ available at the `Talks and presentations`_ page.
+The [slides about Sphinx](/en/talks/#sphinx) available at the [Talks and presentations](/en/talks/)
+page.
