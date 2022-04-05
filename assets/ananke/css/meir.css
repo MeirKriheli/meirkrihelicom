@@ -1,5 +1,8 @@
 .bg-solarized {
-	background-color: #fdf6e3;
+	background: #fdf6e3 url(/img/body_bg.png);
+}
+body {
+	font-family: Alef,Arial,sans-serif;
 }
 
 .fg-solarized {
