@@ -7,7 +7,7 @@ tags:
 - Hebrew
 - Translation
 - Disqus
-- FLOSS|floss 
+- floss 
 summary: >
     Old Disqus added the content to the page, thus allowing customization of the
     comments system, which is what I've done for proper Right-to-left layout.

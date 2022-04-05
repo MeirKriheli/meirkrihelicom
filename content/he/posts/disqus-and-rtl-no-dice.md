@@ -7,7 +7,7 @@ tags:
 - Hebrew
 - Translation
 - Disqus
-- FLOSS|floss 
+- floss 
 summary: >
     Disqus הישן הוסיף את התוכן לעמוד, מה שאפשר התאמה של מערכת התגובות, תכונה
     שניצלתי להתאמת התצוגה בכיווניות ימין־שמאל. ה־Disqus החדש ביטל את היכולת הזו.
