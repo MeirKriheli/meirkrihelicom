@@ -23,7 +23,7 @@ enableRobotsTXT = true
   body_classes = "alef bg-solarized"
   custom_css = ["meir.css", "jquery.bxslider.css"]
   text_color = "fg-solarized"
-  post_content_classes = "alef"
+  post_content_classes = "alef tj"
 
 
 [[params.ananke_socials]]
