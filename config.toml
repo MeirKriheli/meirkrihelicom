@@ -21,7 +21,7 @@ enableRobotsTXT = true
 
 [params]
   body_classes = "alef bg-solarized"
-  custom_css = ["meir.css"]
+  custom_css = ["meir.css", "jquery.bxslider.css"]
   text_color = "fg-solarized"
   post_content_classes = "alef"
 
@@ -63,3 +63,7 @@ suffixes = ["rss"]
     noHl = false
     style = 'solarized-dark'
     tabWidth = 4
+  [markup.goldmark]
+    [markup.goldmark.parser]
+      [markup.goldmark.parser.attribute]
+      block = true
