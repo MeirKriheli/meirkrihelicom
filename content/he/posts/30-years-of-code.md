@@ -3,7 +3,7 @@ slug: 30-years-of-code
 date: 2013-09-04T02:11:27
 title: שלושים שנות קוד
 tags:
-- FLOSS
+- floss
 - Programming
 - sysadmin
 summary: >

@@ -6,7 +6,7 @@
 	color: #586e75;
 }
 
-main h1, main h2, main h3, main h4, main h5 {
+main h1, main h2, main h3 {
 	color: #cb4b16;
 }
 
@@ -33,15 +33,44 @@ main h1, main h2, main h3, main h4, main h5 {
     font-style: normal;
 }
 
-.alef {
-  font-family: avenir next,avenir,sans-serif;
-}
 
-[dir="rtl"] .alef {
+.alef {
   font-family: Alef,sans-serif;
 }
 
 
 .highlight {
   direction: ltr;
+}
+
+[dir="rtl"] .lh-copy blockquote {
+	display: block;
+	font-size: .875em;
+	margin-right: 2rem;
+  margin-left: 0;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	border-right: 4px solid #ccc;
+  border-left: 0 none;
+	padding-right: 1rem;
+  padding-left: 0;
+}
+
+main figure {
+  text-align: center;
+}
+
+main figure h4 {
+  margin-top: 0;
+  font-weight: normal;
+  font-size: 1rem;
+}
+
+main figure img {
+  display: inline-block;
+  box-shadow: 4px 4px 8px rgba(0,0,0,0.25);
+}
+
+[dir="rtl"] main figure img {
+  box-shadow: -4px 4px 8px rgba(0,0,0,0.25);
 }
