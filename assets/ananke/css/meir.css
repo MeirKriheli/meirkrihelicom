@@ -46,6 +46,11 @@ main h1, main h2, main h3 {
   direction: ltr;
 }
 
+code {
+  direction: ltr;
+  display: inline-block;
+}
+
 [dir="rtl"] .lh-copy blockquote {
 	display: block;
 	font-size: .875em;
