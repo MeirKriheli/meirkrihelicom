@@ -17,6 +17,10 @@
     --green: #859900;
 
     --bgcolor: var(--base3);
+    --alt-bg-color: var(--base03);
+    --fg-color: var(--base01);
+    --link-color: var(--orange);
+    --link-hover-color: var(--magenta);
 }
 
 
@@ -28,11 +32,15 @@ body {
 }
 
 .fg-solarized {
-	color: var(--base01);
+	color: var(--fg-color);
 }
 
 main h1, main h2, main h3 {
   color: var(--orange);
+}
+
+.bg-alt-background {
+  background: var(--alt-bg-color);
 }
 
 @font-face {
@@ -106,5 +114,9 @@ main figure img {
 }
 
 .nested-links a {
-  color: var(--orange);
+  color: var(--link-color);
+}
+
+.nested-links a:focus, .nested-links a:hover {
+  color: var(--link-hover-color);
 }
