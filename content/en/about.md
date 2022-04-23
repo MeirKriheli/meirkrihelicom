@@ -5,6 +5,7 @@ slug: about
 description: About Meir Kriheli
 type: page
 menu: main
+weight: 6
 ---
 
 My name is Meir Kriheli, an experienced freelancer, software developer, system

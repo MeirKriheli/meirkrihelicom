@@ -5,6 +5,7 @@ slug: links
 description: קישורים מועדפים
 type: page
 menu: main
+weight: 5
 ---
 
 * [Whatsup, תמיכה וחדשות לינוקס וקוד פתוח בעברית](http://whatsup.org.il)

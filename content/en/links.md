@@ -5,6 +5,7 @@ slug: links
 description: Favorite Links
 type: page
 menu: main
+weight: 5
 ---
 
 * [Whatsup, Hebrew Linux & Open Source news and support](http://whatsup.org.il)

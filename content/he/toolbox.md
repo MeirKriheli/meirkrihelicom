@@ -5,6 +5,7 @@ slug: toolbox
 description: "חלק מהכלים האהובים עלי"
 type: page
 menu: main
+weight: 4
 ---
 
 חלק מהכלים האהובים עלי:

@@ -5,6 +5,7 @@ slug: toolbox
 description: "Some of my favorite tools"
 type: page
 menu: main
+weight: 4
 ---
 
 Some of my favorite tools:
