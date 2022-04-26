@@ -1,0 +1,8 @@
+<div class="mt5 pb4 bb b--black-10">
+  <h2><a name="{{ .Get "name" }}" href="/talks/trust/index.html" target="_blank" class="no-underline">{{ .Get "title" }}</a></h2>
+  <p><a href="{{ .Get "url" }}" target="_blank"><img src="{{ .Get "image" }}" alt="{{ i18n "slideshow" . }}" class="shadow-5 dib"></a></p>
+  <p>{{ .Get "desc" | safeHTML }}</p>
+  <div>
+    <a class="link grow no-underline br4 ba ph3 pv2 dib" href="{{ .Get "url" }}" target="_blank">{{ i18n "view"  }}</a>
+  </div>
+</div>

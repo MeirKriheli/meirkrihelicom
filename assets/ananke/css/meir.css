@@ -15,18 +15,25 @@
     --blue: #268bd2;
     --cyan: #2aa198;
     --green: #859900;
+    --base3-lighten: #fefbf4;
 
     --bgcolor: var(--base3);
     --alt-bg-color: var(--base03);
     --fg-color: var(--base01);
     --link-color: var(--orange);
-    --link-hover-color: var(--magenta);
+    --link-hover-color: var(--red);
+    --bg-lighten: var(--base3-lighten);
 }
 
 
 .bg-solarized {
 	background: var(--bgcolor) url(/img/body_bg.png);
 }
+
+.bg-lighten {
+	background: var(--bg-lighten);
+}
+
 body {
 	font-family: Alef,Arial,sans-serif;
 }
@@ -119,4 +126,8 @@ main figure img {
 
 .nested-links a:focus, .nested-links a:hover {
   color: var(--link-hover-color);
+}
+
+.pr6_5  {
+  padding-right: 13rem;
 }

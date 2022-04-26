@@ -1,0 +1,5 @@
+[view]
+  other = "צפיה"
+
+[slideshow]
+  other = 'מצגת {{ .Get "title" }}'

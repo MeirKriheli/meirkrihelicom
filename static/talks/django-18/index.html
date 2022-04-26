@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>What's new in Django 1.8</title>
+
+		<meta name="description" content="Changes in django 1.8">
+		<meta name="author" content="Meir Kriheli">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/solarized.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>What's new in Django 1.8</h1>
+					<h3>PyWeb-IL 44</h3>
+					<p>
+						<small><a href="http://meirkriheli.com">Meir Kriehli</a> / <a href="https://twitter.com/mkriheli">@mkriheli</a></small>
+					</p>
+				</section>
+
+        <section>
+            <h2>Well, At least some of it</h2>
+            <p>The task is getting harder and harder, humongous change list.</p>
+            <p>So we'll discuss some notable changes.</p>
+        </section>
+				<section>
+					<h2>LTS</h2>
+					<ul>
+						<li>At least 3 years support for security and data loss related bugs.</li>
+            <li>Previous LTS version, 1.4, will get updates 6 months after 1.8's release.</li>
+					</ul>
+          <aside class="notes">
+            <p>
+              1.4 released March 23, 2012
+            </p>
+            <p>
+              mention problems we have with open knesset stuck at 1.6
+            </p>
+          </aside>
+				</section>
+
+        <section>
+          <h2>Crowd funding</h2>
+          <p>2 new features were crowd funded: </p>
+          <ul>
+            <li>
+              <a href="https://www.kickstarter.com/projects/mjtamlyn/improved-postgresql-support-in-django">Improved PostgreSQL support</a>.
+            </li>
+            <li>
+              <a href="https://www.indiegogo.com/projects/multiple-template-engines-for-django">Multiple template engines</a>.
+            </li>
+          </ul>
+				<!-- Example of nested vertical slides -->
+				</section>
+
+        <section>
+            <section>
+                <h2>Model._meta API</h2>
+                <h3>Formalized</h3>
+            </section>
+            <section>
+              <h2>Model._meta in the old days</h2>
+              <p>Not official nor stable</p>
+              <pre><code data-trim>
+for field in self._meta.fields:
+    if f.name == 'foo':
+        pass
+              </code></pre>
+            </section>
+            <section>
+                <h2>Django 1.8</h2>
+              <pre><code data-trim>
+f = self._meta.get_field('foo')
+all_fields_list = self._meta.get_fields()
+              </code></pre>
+            </section>
+
+            <section>
+                <h2>Deprecated some old API endpoints.</h2>
+                <ul>
+                    <li>Will be removed in Django 2.0</li>
+                    <li>
+                      See <a href="https://docs.djangoproject.com/en/1.8/ref/models/meta/#migrating-old-meta-api">Migrating from the old API</a>
+                      for common use case replacements.
+                    </li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>Multiple template engines</h2>
+                <ul>
+                    <li>Stable API for integrating template backends.</li>
+                    <li>
+                      Built in support for <a href="http://jinja.pocoo.org/">Jinja2</a>.
+                    </li>
+                    <li>Do your own <a href="https://docs.djangoproject.com/en/1.8/topics/templates/#custom-backends">custom backends</a>.</li>
+                </ul>
+                <aside class="notes">
+                    Jinja2: modelled after Django’s templates. It is fast, widely used and secure with the optional sandboxed template execution environment
+                </aside>
+            </section>
+            <section>
+                <pre><code>pip install Jinja2</code></pre>
+                <p>In settings (new in 1.8):</p>
+                <pre><code>
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'APP_DIRS': True,
+    },
+]
+                </code></pre>
+
+                Above <code>APP_DIRS</code> means Jinja2 engines look for templates in
+                the <code>jinja2</code> subdirectory of installed applications.
+            </section>
+
+            <section>
+              <ul>
+                <li>
+                  Default configuration for Jinja2 is kept to a minimum on purpose.
+                </li>
+                <li>
+                  Changes from Jinja2's default configuration includes setting
+                  <code>autoescape</code>, correct template loader for <code>APP_DIRS</code>,
+                  <code>auto_reload</code> and <code>undefined</code>.
+                </li>
+                <li>
+                  No awareness of Django's context processors, filters etc.
+                </li>
+              </ul>
+              <aside class="notes">
+                <p>
+                auto_reload is set based on settings.DEBUG
+                </p>
+                <p>
+                undefined is DebugUndefined which return debug info when
+                printed or Undefined (can only be printed or iterated), based
+                on settings.DEBUG
+                </p>
+              </aside>
+            </section>
+
+            <section>
+              Use the <code>environment</code> option to add Django specific api. From the docs,
+              assuming we've created <strong>myproject/jinja2.py</strong>:
+              <pre><code>
+from __future__ import absolute_import  # Python 2 only
+
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.core.urlresolvers import reverse
+
+from jinja2 import Environment
+
+
+def environment(**options):
+    env = Environment(**options)
+    env.globals.update({
+        'static': staticfiles_storage.url,
+        'url': reverse,
+    })
+    return env
+              </code></pre>
+            </section>
+
+            <section>
+                Define it in the <code>TEMPLATE</code> options:
+              <pre><code>
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'APP_DIRS': True,
+        'OPTIONS': {
+          'environment': 'myproject.jinja2.environment',
+        }
+    },
+]
+                </code></pre>
+
+                Usage in the template:
+                <pre><code>
+<img src="{{ static('path/to/company-logo.png') }}" alt="Company Logo">
+
+<a href="{{ url('admin:index') }}">Administration</a>
+                </code></pre>
+
+            </section>
+        </section>
+
+        <section>
+          <section>
+
+            <h2>Security enhancements</h2>
+            <p>
+              Integrated several features from <a href="https://pypi.python.org/pypi/django-secure">django-secure</a>
+            </p>
+          </section>
+          <section>
+            <h3>
+              <code>Security Middleware</code>
+            </h3>
+            <p>
+            <code>django.middleware.security.SecurityMiddleware</code>
+            </p>
+            <p>
+            Provides some security enhancements for request/response. Enable
+            each <a href="https://docs.djangoproject.com/en/1.8/ref/middleware/#django.middleware.security.SecurityMiddleware">separately using a setting</a>.
+            </p>
+          </section>
+          <section>
+            <h3><code>./manage.py check --deploy</code></h3>
+            <p>
+            New option for <code>check</code> management command <code>--deploy</code>,
+            check settings file to increase site security.
+            </p>
+          </section>
+        </section>
+
+        <section>
+            <h2>Database types and queries</h2>
+        </section>
+        <section>
+            <section>
+                <h3>New data types</h3>
+                <ul>
+                    <li>UUIDField</li>
+                    <li>DurationField</li>
+                </ul>
+            </section>
+            <section>
+                <h3>UUID field</h3>
+                <p>
+                  Stored as the native uuid data type on PostgreSQL and as a
+                  fixed length character field on other backends.
+                </p>
+                <p>
+                  Has a corresponding
+                  <a href="https://docs.djangoproject.com/en/1.8/ref/forms/fields/#django.forms.UUIDField">form field</a>
+                  will accept any any string format accepted as the hex
+                  argument to Python's <code>UUID</code> constructor.
+                </p>
+            </section>
+            <section>
+                <h3>Duration Field</h3>
+                <p>For storing periods of time (<code>timedelta</code>)</p>
+                <ul>
+                  <li>Stored as <code>interval</code> type on PostgreSQL.</li>
+                  <li><code>INTERVAL DAY(9)</code> TO SECOND(6) on oracle.</li>
+                  <li><code>bigint</code> of microseconds on other backends.</li>
+                  <li>Has a corresponding <a href="https://docs.djangoproject.com/en/1.8/ref/forms/fields/#django.forms.DurationField">form field</a>.</li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>PostgreSQL specific</h2>
+                <p>
+                  <code>django.contrib.postgres.fields</code> has  extensions
+                  for PostgreSQL specific features:
+                </p>
+                <p>
+                  <code>ArrayField</code>, <code>HStoreField</code>,
+                  Range Fields, and <code>unaccent</code> lookup.
+                </p>
+                <aside class="notes">
+                  Finally getting some progress, SQLAlchemy had support for
+                  special features for a long time.
+                </aside>
+            </section>
+
+            <section>
+                <h3>Array Field</h3>
+                <pre><code>
+class Post(models.Model):
+    name = models.CharField(max_length=200)
+    tags = ArrayField(models.CharField(max_length=200), blank=True)
+                </code></pre>
+
+                <pre><code>
+>>> Post.objects.create(name='First post', tags=['thoughts', 'django'])
+>>> Post.objects.create(name='Second post', tags=['thoughts'])
+>>> Post.objects.create(name='Third post', tags=['tutorial', 'django'])
+                </pre></code>
+            </section>
+            <section>
+                <h4>Querying</h4>
+                <p>
+                Multitude of query options, index, and slice transforms:
+                </p>
+                <ul>
+                    <li><code>contains</code></li>
+                    <li><code>contained_by</code></li>
+                    <li><code>overlap</code></li>
+                    <li><code>len</code></li>
+                    <li>Specific index or slice</li>
+                </ul>
+                <p>See <a href="https://docs.djangoproject.com/en/1.8/ref/contrib/postgres/fields/#querying-arrayfield">the documentation</a>.</p>
+                <aside class="notes">
+                  Indexing ArrayField
+
+                  At present using db_index will create a btree index. This does not offer particularly significant help to querying. A more useful index is a GIN index, which you should create using a RunSQL operation.
+                </aside>
+            </section>
+
+            <section>
+                <h3>HStoreField</h3>
+                <p>
+                    <code>HStoreField</code> stores key/value mappings of strings to strings.
+                </p>
+                <p>Need to setup the <code>hstore</code> extension on your db by adding a migration with 
+                <code>HStoreExtension</code> operation.</p>
+                <aside class="notes">
+                    Waiting for JSONB.
+                </aside>
+            </section>
+            <section>
+                <h4>HStoreField example</h4>
+                <pre><code>
+class Dog(models.Model):
+    name = models.CharField(max_length=200)
+    data = HStoreField()
+                </code></pre>
+                <code><pre>
+>>> Dog.objects.create(name='Rufus', data={'breed': 'labrador'})
+>>> Dog.objects.create(name='Meg', data={'breed': 'collie'})
+                </code></pre>
+            </section>
+            <section>
+                <h4>Querying</h4>
+                <ul>
+                    <li>key lookups (<code>data__breed='collie'</code>)</li>
+                    <li><code>contains</code></li>
+                    <li><code>contained_by</code></li>
+                    <li><code>has_key</code></li>
+                    <li><code>has_keys</code></li>
+                    <li><code>keys</code></li>
+                    <li><code>values</code></li>
+                </ul>
+                <p>See <a href="https://docs.djangoproject.com/en/1.8/ref/contrib/postgres/fields/#querying-hstorefield">the documentation</a>.</p>
+            </section>
+            <section>
+                <h3>Range Fields</h3>
+                <p>Five range field types, corresponding to the built-in range types in PostgreSQL.</p>
+                <ul>
+                    <li><code>IntegerRangeField</code></li>
+                    <li><code>BigIntegerRangeField</code></li>
+                    <li><code>FloatRangeField</code></li>
+                    <li><code>DateTimeRangeField</code></li>
+                    <li><code>DateRangeField</code></li>
+                </ul>
+                <p>Can define custom range types.</p>
+            </section>
+            <section>
+                <h4>RangeField example</h4>
+                <pre><code>
+class Event(models.Model):
+    name = models.CharField(max_length=200)
+    ages = IntegerRangeField()
+                </code></pre>
+
+
+                <pre><code>
+>>> Event.objects.create(name='Soft play', ages=(0, 10))
+>>> Event.objects.create(name='Pub trip', ages=(21, None))
+                </pre></code>
+            </section>
+            <section>
+                <h4>Querying Range fields</h4>
+                Example for <code>contains</code>
+                <pre><code>
+>>> from psycopg2.extras import NumericRange
+>>> Event.objects.filter(ages__contains=NumericRange(4, 5))
+                </code></pre>
+            </section>
+            <section>
+                <h4>Querying Range fields</h4>
+                <ul>
+                  <li><code>contains</code></li>
+                  <li><code>contained_by</code></li>
+                  <li><code>overlap</code></li>
+                  <li><code>fully_lt</code></li>
+                  <li><code>fully_gt</code></li>
+                  <li><code>not_lt</code></li>
+                  <li><code>not_gt</code></li>
+                  <li><code>adjacent_to</code></li>
+                  <li><code>startswith</code></li>
+                  <li><code>endswith</code></li>
+                  <li><code>isempty</code></li>
+                </ul>
+            </section>
+            <section>
+                <h3>unaccent</h3>
+                <ul>
+                    <li>Perform accent-insensitive lookup</li>
+                    <li>Activate <code>haccent</code> or use <code>UnaccentExtension</code>
+                    in a migration.</li>
+                    <pre><code>
+>>> City.objects.filter(name__unaccent="México")
+['&lt;City: Mexico&gt;']
+
+>>> User.objects.filter(first_name__unaccent__startswith="Jerem")
+['&lt;User: Jeremy&gt;', '&lt;User: Jérémy&gt;', '&lt;User: Jérémie&gt;', '&lt;User: Jeremie&gt;']
+                    </code></pre>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Query Expressions, Conditional Expressions, and Database Functions</h2>
+            <p>More SQL power for us</p>
+          </section>
+          <section>
+              <h3>Query Expressions</h3>
+              <ul>
+                <li>
+                  Custom expression classes allowed after large internal refactoring of <code>annotate()</code>
+                  and <code>aggregate()</code>by Josh Smeaton.
+                </li>
+                <li>Aggregates can reference multiple fields and perform arithmetic.</li>
+                <li><code>order_by()</code> can accept expressions.</li>
+              </ul>
+          </section>
+          <section>
+              <h4>Examples from django's docs</h4>
+              <pre><code>
+# Aggregates can contain complex computations also
+Company.objects.annotate(num_offerings=Count(F('products') + F('services')))
+
+# Expressions can also be used in order_by()
+Company.objects.order_by(Length('name').asc())
+Company.objects.order_by(Length('name').desc())
+              </code></pre>
+          </section>
+          <section>
+              <h3>Conditional Expressions</h3>
+              <p>Let you use <code>if</code> ... <code>elif</code> ... <code>else</code>
+              logic within filters, annotations, aggregations, and updates</p>
+              <ul>
+                <li><code>When</code></li>
+                <li><code>Case</code></li>
+              </ul>
+          </section>
+          <section>
+            <h4>Conditional annotation</h4>
+            <pre><code>
+>>> # Get the discount for each Client based on the account type
+>>> Client.objects.annotate(
+...     discount=Case(
+...         When(account_type=Client.GOLD, then=Value('5%')),
+...         When(account_type=Client.PLATINUM, then=Value('10%')),
+...         default=Value('0%'),
+...         output_field=CharField(),
+...     ),
+... ).values_list('name', 'discount')
+            </code></pre>
+          </section>
+          <section>
+              <h4>Conditional Update</h4>
+            <pre><code>
+>>> a_month_ago = date.today() - timedelta(days=30)
+>>> a_year_ago = date.today() - timedelta(days=365)
+>>> # Update the account_type for each Client from the registration date
+>>> Client.objects.update(
+...     account_type=Case(
+...         When(registered_on__lte=a_year_ago,
+...              then=Value(Client.PLATINUM)),
+...         When(registered_on__lte=a_month_ago,
+...              then=Value(Client.GOLD)),
+...         default=Value(Client.REGULAR)
+...     ),
+... )
+>>> Client.objects.values_list('name', 'account_type')
+[('Jane Doe', 'G'), ('James Smith', 'R'), ('Jack Black', 'P')]
+            </code></pre>
+
+          </section>
+          <section>
+              <h4>Conditional Aggregation</h4>
+            <pre><code>
+>>> from django.db.models import IntegerField, Sum
+>>> Client.objects.aggregate(
+...     regular=Sum(
+...         Case(When(account_type=Client.REGULAR, then=1),
+...              output_field=IntegerField())
+...     ),
+...     gold=Sum(
+...         Case(When(account_type=Client.GOLD, then=1),
+...              output_field=IntegerField())
+...     ),
+...     platinum=Sum(
+...         Case(When(account_type=Client.PLATINUM, then=1),
+...              output_field=IntegerField())
+...     )
+... )
+{'regular': 2, 'gold': 1, 'platinum': 3}
+            </code></pre>
+
+          </section>
+          <section>
+            <h3>Database Functions</h3>
+            <p>
+            Use <a href="https://docs.djangoproject.com/en/1.8/ref/models/database-functions/">functions provided by the underlying database</a> in annotations, filters, etc.
+            </p>
+            <ul>
+              <li><code>Coalesce</code></li>
+              <li><code>Concat</code></li>
+              <li><code>Length</code></li>
+              <li><code>Lower</code></li>
+              <li><code>Upper</code></li>
+              <li><code>Substr</code></li>
+            </ul>
+          </section>
+        </section>
+        <section>
+            <h2>TestCase data setup</h2>
+            <ul>
+              <li>Tests are wrapped with 2 nested <code>atomic</code> block, class level and for each test.</li>
+              <li>The classmethod <code>TestCase.setUpTestData()</code> allows setting initial data at the class level for the whole test.</li>
+              <li>Faster than using <code>setup()</code> which runs for each test.</li>
+              <li>Backends without transactions will still run the tests but won't benifit from improvements.</li>
+              <li>Fixture loading within <code>TestCase</code> is now performed once for the whole <code>TestCase</code></li>
+            </ul>
+            <aside class="notes">
+              In contrast to using <code>setup()</code> which runs for each test.
+            </aside>
+        </section>
+        <section>
+            <h2>Auth</h2>
+            <ul>
+              <li>Can customize email for <code>PasswordResetForm</code> by overriding
+                  <code>send_email()</code></li>
+              <li>Permission name is now 255 chars, run migration.</li>
+              <li>Default password hasher iterations increased by 33%.</li>
+            </ul>
+        </section>
+        <section>
+            <h2>Admin</h2>
+            <ul>
+              <li>Limit module display in the admin index with <code>has_module_permission()</code>.</li>
+              <li>Can override delete_view.</li>
+              <li><code>InlineModelAdmin.show_change_link</code>.</li>
+              <li><code>AdminSite.site_url</code> for the link to "View site", default to <code>"/"</code>.</li>
+              <li>Control who may access the admin site just by overriding <code> AdminSite.has_permission()</code>.</li>
+            </ul>
+        </section>
+        <section>
+          <h2>Forms</h2>
+          <ul>
+            <li><code>Form.has_error(field)</code>.</li>
+            <li><code>required_css_class</code> on labels of required fields.</li>
+            <li><code>Field.label_suffix</code> to override <code>label_suffix</code> per field.</li>
+          </ul>
+        </section>
+        <section>
+            <h2>Management commands</h2>
+            <ul>
+              <li><code>runserver</code> uses daemon threads for faster reloading.</li>
+              <li><code>dumpdata --output</code>.</li>
+              <li><code>loaddata --ignorenonexistent</code> to ignore data for non existent models.</li>
+              <li><code>showmigrations</code>.</li>
+              <li><code>makemigrations --name</code> for custom migration name.</li>
+              <li><code>insepectdb</code> outputs <code>Meta.uniqute_together</code>,
+                  introspects <code>AutoField</code> for PostgreSQL and MySQL, and introspects database views (only tables in &lt; 1.8).</li>
+            </ul>
+        </section>
+        <section>
+          <h2>Migrations</h2>
+          <ul>
+            <li><code>RunSQL</code> can handle parameters.</li>
+            <li><code>RunSQL.noop</code> and <code>RunPython.noop</code>.</li>
+            <li>Can serialize model managers as part of model state.</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Models</h2>
+          <ul>
+            <li><code>default_related_name</code> for model.</li>
+            <li><code>Model.from_db()</code> can customize model loading behaviour in the ORM.</li>
+            <li><code>Model.refresh_from_db()</code></li>
+            <li><code>EmailField.max_length</code> is 254 instead of 75.</li>
+          </ul>
+          <aside class="notes">
+            <p>Default is &lt;model_name&gt;_set.</p>
+          </aside>
+        </section>
+        <section>
+          <h2>Request and Response</h2>
+          <ul>
+            <li><code>GET</code> and <code>POST</code> are <code>QueryDict</code> instead of Dict, <code>FILES</code> is a <code>MultiValueDict</code>.</li>
+            <li>Added <code>HttpResponse.charset</code></li>
+            <li><code>FileResponse</code> for streaming files.</li>
+            <li><code>HttpResponse.setdefault()</code>, allows setting a header unless already been set.</li>
+          </ul>
+        </section>
+
+        <section>
+            <h2>Backwards incompatible changes</h2>
+            <ul>
+              <li>Removed support for PostgreSQL &lt; 9.0, MySQL &lt; 5.5 and Oracle &lt; 11.1.</li>
+              <li><code>select_related()</code> checks validity of given fields instead of ignoring.</li>
+              <li>Querying relation lookups checks for object type.</li>
+              <li>Assigning unsaved objects to relations raises an error.</li>
+              <li>Related object operations (<code>add()</code>, <code>remove()</code>, <code>clear()</code>, direct assignment) are run in a transaction to reduce data corruption risk.</li>
+            </ul>
+        </section>
+        <section>
+          <h2>Removals</h2>
+          <ul>
+            <li><code>django.contrib.formtools</code> moved to separate packages.</li>
+            <li><code>django.contrib.comments</code> (after the deprecation in 1.6).</li>
+            <li><code>TransactionMiddleware</code>, decorators and context managers defined in django.db.transaction (<code>autocommit</code>, <code>commit_on_success</code>, and <code>commit_manually</code>).</li>
+          </ul>
+        </section>
+
+        <section>
+           <h2>Deprecations</h2>
+           <ul>
+             <li>
+               <code>patterns()</code> and string view referencing, instead use:
+               <pre><code>
+from django.conf.urls import url
+from myapp import views
+
+urlpatterns = [
+    url('^$', views.myview),
+    url('^other/$', views.otherview),
+]
+               </code></pre>
+             </li>
+             <li>Some template related settings (moved to the TEMPLATES setting for multi template engines).</li>
+             <li><code>django.core.context_processors</code> moved to <code>django.template.context_processors</code>.</li>
+           </ul>
+        </section>
+
+        <section>
+           <h2>Deprecations</h2>
+           <ul>
+             <li><code>NoArgsCommand</code>, use <code>BaseCommand</code> which takes no arguments by default.</li>
+             <li><code>django.contrib.webdesign</code>, the <code>lorem</code> tag is now built in.</li>
+           </ul>
+           <aside class="notes">
+             Simply remove 'django.contrib.webdesign' from INSTALLED_APPS and {% load webdesign %} from your templates.
+           </aside>
+        </section>
+
+        <section>
+          <p>
+          After preparing this talk:
+          </p>
+          <p>
+          <img src="./tired.jpeg" alt="Tired">
+          </p>
+        </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

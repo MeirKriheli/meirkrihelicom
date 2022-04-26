@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>NoORM - PyWeb-IL 75</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+        <section>
+          <h1>NoORM</h1>
+          <h3>PyWeb-IL #75</h3>
+        </section>
+
+        <section>
+          <section>
+            <h3>Yep, a clickbait title</h3>
+            <p>Since ORMs are perfectly fine for 95.523% of use cases.</p> 
+            <p class="fragment">(Yep, that's the accurate stat).</p>
+            <p class="fragment">(Not made up, I swear :-P)</p>
+          </section>
+          <section>
+              <h2>Not <strong><u>Always</u></strong> ORM</h2>
+              <p>or</p>
+              <h2>Not Always <strong><u>Just</u></strong> ORM</h2>
+              <p>are better titles for this talk.</p>
+            </p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h1>ORMs/ODMs Are Great For Most Cases</h1>
+          </section>
+
+          <section>
+            <h3>Abstract different DB Dialects</h3>
+            <p>Some also treats save and updates the same way.</p>
+            <p>Ease M2M relations.</p>
+          </section>
+          <section>
+            <h3>Stay in your Language's Domain</h3>
+            <pre><code data-trim class="sql">
+            SELECT b.name FROM books b
+              JOIN authors a ON b.author_id = a.id
+              WHERE b.title = 'NoORM'
+            </code></pre>
+            <h3>Vs.</h3>
+            <pre><code data-trim class="python">
+            book = Book.objects.select_related().filter(title='NoORM')
+            # book.author
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Self Documenting Structure</h3>
+            <pre><code data-trim class="python">
+            class Book(Base):
+
+              __tablename__ = 'books'
+
+              id = Column(Integer, primary_key=True)
+              title = Column(String)
+              isbn = Column(String(13))
+              author = relationship("Author", backref="book")
+            </code></pre>
+            <p>Provides a &quot;contract&quot; for developers.</p>
+            <p>IDEs can auto-complete.</p><p>No need to consult db structure.</p>
+          </section>
+
+          <section>
+            <h3>Application Level Validation</h3>
+            <pre><code data-trim class="python">
+              class Article(models.Model):
+                  ...
+                  def clean(self):
+                      # Don't allow draft entries to have a pub_date.
+                      if self.status == 'draft' and self.pub_date:
+                          raise ValidationError({
+                            'pub_date': _('Draft entries may not have a publication date.')
+                          })
+                      ...
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Business Logic</h3>
+            <pre><code data-trim class="python">
+              class Article(models.Model):
+                  ...
+                  def publish(self):
+                    self.status = 'published'
+                    self.pub_date = datetime.now()
+                    ...
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Query Building and Escaping</h3>
+            <p>Chaining (vs. hacks to build the SQL statement)</p>
+            <pre><code data-trim class="python">
+            qs = Article.objects.all()
+
+            if start:
+              qs = qs.filter(pub_date__gte=start)
+
+            if search:
+              qs = qs.filter(title__icontains=search)
+
+            if sort_by in ('title', 'pub_date'):
+              qs = qs.order_by(sort_by)
+            ...
+            </code></pre>
+            <p>This is something Non-Relational DBs got right.</p>
+            <p>Usually one provides a dict, which is easy to construct.</p>
+          </section>
+
+          <section>
+            <h3>Migration</h3>
+            <p>Schema &amp; Data</p>
+          </section>
+
+        </section>
+
+        <section>
+          <section>
+            <h1>But</h1>
+            <p>What if you fall in the other 4.477% ?</p>
+          </section>
+
+          <section>
+            <h2>Problematic Performance Wise</h2>
+            <ul>
+              <li class="fragment">Complex code running in background.</li>
+              <li class="fragment">Greedy by default (all columns).</li>
+              <li class="fragment">Does not JOIN by default, more queries on attribute access.</li>
+            </ul>
+            <p class="fragment">Although <br><a href="https://hackernoon.com/comparing-diesel-and-rust-postgres-97fd8c656fdd" target="_blank">Diesel was faster than pure rust-postgres</a>.</p>
+          </section>
+
+          <section>
+            <h2>Leaky abstraction</h2>
+            <p>ORMs try to map in memory data structures to relational database.</p>
+            <p>That's a hard problem.</p>
+            <p><a href="http://blogs.tedneward.com/post/the-vietnam-of-computer-science/" target="_blank">The Vietnam of Computer Science</a>.</p>
+          </section>
+
+          <section>
+            <h2>Multi Apps and Languages</h2>
+            <ul>
+              <li class="fragment">No single source of truth.</li>
+              <li class="fragment">App level validation and defaults.</li>
+              <li class="fragment">Even if same language, some may be async, can't re-use.</li>
+              <li class="fragment">Data in a complex app may comes from multiple sources, while needing the same business logic.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>DB specific features </h2>
+            <ul>
+              <li>PostgreSQL table inheritance.</li>
+              <li>PostgreSQL 10 IDENTITY column.</li>
+              <li>Faster batch insert - COPY FROM.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Translating from DB lingo to ORM</h2>
+            <p>You finally got the complex CTE query right.</p>
+            <p>Translating to ORM is not always easy.</p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>So, what can we do?</h2>
+            <p>You've outgrown the use cases which ORM fits perfectly:</p>
+            <ul>
+              <li>No silver bullet.</li>
+              <li>Awareness to ORM pitfalls.</li>
+              <li>Try to mix and match according to each project needs.</li>
+              <li>Drop to raw SQL when needed.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Separate in-memory from DB</h2>
+            <p>While providing de/serialization and validation:</p>
+            <ul>
+              <li><a href="http://colander.readthedocs.io/en/latest/basics.html" target="_blank">Colander</a></li>
+              <li><a href="https://schematics.readthedocs.io/en/latest/" target="_blank">Schematics</a></li>
+            </ul>
+            <p>Bonus: easier unit testing without DB mocks.</p>
+          </section>
+
+          <section>
+            <h2>Separate in-memory from DB</h2>
+            <ul>
+              <li>Thus utilize sync/async db access as needed.</li>
+              <li>But, manually keep DB and memory schema in sync.</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <img data-src="bender.jpg" alt="Yup we're screwed"/>
+        </section>
+
+        <section>
+          <h2>Thank you</h2>
+          <p>
+						<a href="http://meirkriheli.com">Meir Kriheli</a> / <a href="http://twitter.com/mkriheli">@mkriheli</a>
+          </p>
+        </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ],
+        history: true
+			});
+		</script>
+	</body>
+</html>

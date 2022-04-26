@@ -1,0 +1,720 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Rust Intro</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/sky.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/solarized-light.css">
+
+    <style type="text/css">
+      .run {
+        text-align: right;
+        font-size: smaller;
+        float: right;
+      } 
+
+      .run a {
+        display: inline block;
+        width: 1em;
+      }
+
+      .run a::before {
+        content: "\25BA";
+      }
+    </style>
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+        <section>
+          <h1>TRust The Process</h1>
+          <h3>Intro to Rust</h3>
+          <p><a href="https://meirkriheli.com" target="_blank">Meir Kriheli</a></p>
+        </section>
+
+        <section>
+          <p>
+            Rust is a multi-paradigm system programming language focused
+            on safety, especially safe concurrency.
+          </p>
+          <p>
+            Rust is syntactically similar
+            to C++, but is designed to provide better memory safety while
+            maintaining high performance.
+          </p>
+          <p style="text-align: right">
+            <a href="https://en.wikipedia.org/wiki/Rust_(programming_language)" target="_blank">Wikipedia</a></p>
+        </section>
+
+        <section>
+          <p>Most loved programming language in the Stack Overflow Developer Survey since 2016</p>
+          <p>One of the fastest in <a href="https://www.techempower.com/benchmarks/#section=data-r18&hw=ph&test=fortune" target="_blank">Techempower benchmarks</a></p>
+        </section>
+
+				<section>
+          <h2>History</h2>
+          <ul>
+            <li>2006: Personal project of Graydon Hoare from Mozilla.</li>
+            <li>2009: Sponsored by Mozilla</li>
+            <li>2010: Announced</li>
+            <li>2012: Servo started</li>
+            <li>2015: Rust 1.0 (aka 2015)</li>
+            <li>2018: Rust 2018</li>
+            <li>2020: <a href="https://blog.rust-lang.org/2020/08/18/laying-the-foundation-for-rusts-future.html" target="_blank">Foundation</a>, after Mozilla fires team</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Likes</h2>
+          <p>Tooling, no GC, high level with zero cost abstractions, safety, error handling, pattern matching, compile error messages</p>
+          <h2>Dislikes</h2>
+          <p>Compile times, initial complexity</p>
+        </section>
+
+        <section>
+          
+          <section>
+            <h2>Cargo</h2>
+            <ul>
+              <li>Package manager (download, create, upload)</li>
+              <li><a href="https://crates.io/" target="_blank">crates.io</a></li>
+              <li>Build tool</li>
+              <li>Documentation</li>
+              <li>Testing, benchmark</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Cargo</h2>
+            <p><a href="https://github.com/rust-lang/cargo/wiki/Third-party-cargo-subcommands">Extensible</a> via <code>cargo-xxxx</code> subcommands (like <code>git</code>), notable:</p>
+            <ul>
+              <li>clippy - Linting</li>
+              <li>audit - check for crates with security vulnerabilities</li>
+              <li>fmt - Formatting according to the style guide</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Basic Syntax and Tooling</h2>
+          </section>
+
+          <section>
+            <h3>Start new project</h3>
+            <pre><code data-trim class="shell">
+            cargo init "project name"
+            ...
+            cargo run
+            </code></pre>
+            <pre><code data-trim class="shell">
+            cargo init --lib "library name"
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Hello World</h3> 
+            <pre><code data-trim class="rust">
+              fn main() {
+                  println!("Hello, world!");
+              }
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Variables (let)</h3> 
+              <p class="run"><a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&code=fn%20main()%20%7B%0A%20%20%20%20let%20x%20%3D%207%3B%20%2F%2F%20type%20inference%0A%20%20%20%20let%20y%3A%20i8%20%3D%20100%3B%0A%20%20%20%20let%20z%20%3D%206u32%3B%0A%20%20%20%20println!(%22x%2C%20y%2C%20z%3A%20%20%7B%7D%2C%20%7B%7D%2C%20%7B%7D%22%2C%20x%2C%20y%2C%20z)%3B%0A%7D%0A" target="_blank"></a></p>
+              <pre><code data-trim class="rust line-numbers">
+                fn main() {
+                  let x = 7; // type inference
+                  let y: i8 = 100;
+                  let z = 6u32;
+                  println!("x, y, z:  {}, {}, {}", x, y, z);
+                }
+              </code></pre>
+            <pre><code class="plaintext">x, y, z:  7, 100, 6</code></pre>
+          </section>
+
+          <section>
+            <h3>Immutable by default </h3>
+            <p class="run"><a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&code=fn%20main()%20%7B%0A%20%20%20%20let%20_x%20%3D%206%3B%0A%20%20%20%20_x%20%3D%204%3B%0A%7D" target="_blank"></a></p>
+            <pre><code data-trim class="rust line-numbers">
+              fn main() {
+                  let _x = 6;
+                  _x = 4;
+              }
+            </code></pre>
+            <pre><code data-trim class="shell">
+error[E0384]: cannot assign twice to immutable variable `_x`
+ --> src/main.rs:3:5
+  |
+2 |     let _x = 6;
+  |         --
+  |         |
+  |         first assignment to `_x`
+  |         help: make this binding mutable: `mut _x`
+3 |     _x = 4;
+  |     ^^^^^^ cannot assign twice to immutable variable
+            </code></pre>
+            <p><small>Note the helpful message</small></p>
+          </section>
+
+          <section>
+            <p class="run"><a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&code=fn%20main()%20%7B%0A%20%20%20%20let%20mut%20x%20%3D%204%3B%20%2F%2F%20type%20inference%0A%20%20%20%20x%20%3D%20if%20x%20%3C%203%20%7B%200%20%7D%20else%20%7B%20x%20%2B%201%20%7D%3B%0A%20%20%20%20println!(%22x%20is%20%7B%7D%22%2C%20x)%3B%0A%7D%0A" target="_blank"></a></p>
+            <pre><code data-trim class="rust line-numbers">
+              fn main() {
+                  let mut x = 4; // type inference
+                  x = if x < 3 { 0 } else { x + 1 };
+                  println!("x is {}", x);
+              }
+            </code></pre>
+            <pre><code data-trim>x is 5</code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Ownership and Borrowing</h2>    
+            <p>Basis for compile time memory management and safety</p>
+          </section>  
+
+          <section>
+            <p class="run"><a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&code=fn%20main()%20%7B%0A%20%20%20%20let%20name%20%3D%20String%3A%3Afrom(%22Meir%22)%3B%0A%20%20%20%20greet(name)%3B%0A%7D%0A%0Afn%20greet(name%3A%20String)%20%7B%0A%20%20%20%20println!(%22Hello%20%7B%7D%22%2C%20name)%3B%0A%7D" target="_blank"></a></p>
+            <pre><code data-trim class="rust line numbers">
+fn main() {
+    let name = String::from("Meir");
+    greet(name);
+}
+
+fn greet(name: String) {
+    println!("Hello {}", name);  // freed
+}
+            </code></pre>
+            <pre><code data-trim class="plaintext">Hello Meir</code></pre>
+          </section>
+
+          <section>
+            <h3>Moved value</h3>
+            <p class="run"><a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&code=fn%20main()%20%7B%0A%20%20%20%20let%20name%20%3D%20String%3A%3Afrom(%22Meir%22)%3B%0A%20%20%20%20greet(name)%3B%0A%20%20%20%20println!(%22%7B%7D%20was%20greeted!%22%2C%20name)%3B%0A%7D%0A%0Afn%20greet(name%3A%20String)%20%7B%0A%20%20%20%20println!(%22Hello%20%7B%7D%22%2C%20name)%3B%0A%7D" target="_blank"></a></p>
+            <pre><code data-trim class="rust line numbers">
+fn main() {
+    let name = String::from("Meir");
+    greet(name);
+    println!("{} was greeted!", name);
+}
+
+fn greet(name: String) {
+    println!("Hello {}", name);
+}
+            </code></pre>
+
+            <pre><code data-trim class="plaintext">
+error[E0382]: borrow of moved value: `name`
+ --> src/main.rs:4:33
+  |
+2 |     let name = String::from("Meir");
+  |         ---- move occurs because `name` has type `std::string::String`, which does not implement the `Copy` trait
+3 |     greet(name);
+  |           ---- value moved here
+4 |     println!("{} was greeted!", name);
+  |                                 ^^^^ value borrowed here after move
+            </code></pre>
+            
+          </section>
+
+          <section>
+            <h3>Borrow</h3> 
+            <p class="run"><a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&code=fn%20main()%20%7B%0A%20%20%20%20let%20name%20%3D%20String%3A%3Afrom(%22Meir%22)%3B%0A%20%20%20%20greet(%26name)%3B%0A%20%20%20%20println!(%22%7B%7D%20was%20greeted!%22%2C%20name)%3B%0A%7D%0A%0Afn%20greet(name%3A%20%26String)%20%7B%0A%20%20%20%20println!(%22Hello%20%7B%7D%22%2C%20name)%3B%0A%7D" target="_blank"></a></p>
+            <pre><code data-trim class="rust line numbers">
+fn main() {
+    let name = String::from("Meir");
+    greet(&name);
+    println!("{} was greeted!", name);
+}
+
+fn greet(name: &String) {
+    println!("Hello {}", name);
+}
+            </code></pre>
+            <pre><code data-trim class="plaintext">
+            Hello Meir
+            Meir was greeted!</code></pre>
+          </section>
+
+          <section>
+            <h3>Mutable Borrow</h3> 
+            <p>Borrows can't mutate values by default</p>
+            <p class="run"><a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&code=fn%20main()%20%7B%0A%20%20%20%20let%20mut%20name%20%3D%20String%3A%3Afrom(%22Meir%22)%3B%0A%20%20%20%20add_greeting(%26name)%3B%0A%20%20%20%20println!(%22%7B%7D!%22%2C%20name)%3B%0A%7D%0A%0Afn%20add_greeting(name%3A%20%26String)%20%7B%0A%20%20%20%20name.insert_str(0%2C%20%22Welcome%20%22)%3B%0A%7D" target="_blank"></a></p>
+            <pre><code data-trim class="rust line numbers">
+fn main() {
+    let mut name = String::from("Meir");
+    add_greeting(&name);
+    println!("{}!", name);
+}
+
+fn add_greeting(name: &String) {
+    name.insert_str(0, "Welcome ");
+}
+            </code></pre>
+            <pre><code data-trim class="plaintext">
+error[E0596]: cannot borrow `*name` as mutable, as it is behind a `&` reference
+ --> src/main.rs:7:5
+  |
+7 | fn add_greeting(name: &String) {
+  |                       ------- help: consider changing this to be a mutable reference: `&mut std::string::String`
+8 |     name.insert_str(0, "Welcome ");
+  |     ^^^^ `name` is a `&` reference, so the data it refers to cannot be borrowed as mutable
+            </code></pre>
+          </section>
+
+          <section>
+            <p class="run"><a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&code=fn%20main()%20%7B%0A%20%20%20%20let%20mut%20name%20%3D%20String%3A%3Afrom(%22Meir%22)%3B%0A%20%20%20%20add_greeting(%26mut%20name)%3B%0A%20%20%20%20println!(%22%7B%7D!%22%2C%20name)%3B%0A%7D%0A%0Afn%20add_greeting(name%3A%20%26mut%20String)%20%7B%0A%20%20%20%20name.insert_str(0%2C%20%22Welcome%20%22)%3B%0A%7D" target="_blank"></a></p>
+            <pre><code data-trim class="rust line numbers">
+fn main() {
+    let mut name = String::from("Meir");
+    add_greeting(&mut name);
+    println!("{}!", name);
+}
+
+fn add_greeting(name: &mut String) {
+    name.insert_str(0, "Welcome ");
+}
+            </code></pre>
+            <pre><code data-trim class="plaintext">Welcome Meir!</code></pre>
+            <p>We can tell from the function signature and call that <code>name</code> is gonna mutate</p>
+          </section>
+
+        </section>
+
+        <section>
+          <section>
+            <h2>Functions and blocks</h2>
+          </section>
+          <section>
+            <h3>Functions</h3>
+            <pre><code data-trim class="rust line numbers">
+fn sum(a: f64, b: f64) -> f64 {
+    return a + b;
+}
+            </code></pre>
+            <pre><code data-trim class="rust line numbers">
+fn sum(a: f64, b: f64) -> f64 {
+    a + b // last expression returns (no semicolon)
+}
+            </code></pre>
+          </section>
+
+
+          <section>
+            <h3>Blocks</h3> 
+            Have their own scope, are also an expression
+            <pre><code data-trim class="rust line numbers">
+    let answer = {
+        let y = 40;
+        let x = 2;
+        y + x
+    };
+    println!("The answer is {}", answer);
+            </code></pre>
+            <pre><code data-trim class="rust line numbers">
+              The answer is 42
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+
+          <section>
+            <h2>Pattern Matching, Enums</h2>
+          </section>
+
+          <section>
+            <h3>Simple to complex matches</h3>
+            <p>Must satisfy all branches</p>
+            <pre><code data-trim class="rust line numbers">
+fn main() {
+    let age = 23;
+    let description = match age {
+        x if x < 13 => "child",
+        13..=17 => "teen",
+        18..=59 => "adult",
+        x if x > 59 => "senior"
+    };
+    println!("{} is {}", age, description);
+}
+            </code></pre>
+            <pre><code data-trim class="plaintext">
+error[E0004]: non-exhaustive patterns: `std::i32::MIN..=12i32` and `60i32..=std::i32::MAX` not covered
+ --> src/main.rs:3:29
+  |
+3 |     let description = match age {
+  |                             ^^^ patterns `std::i32::MIN..=12i32` and `60i32..=std::i32::MAX` not covered
+  |
+  = help: ensure that all possible cases are being handled, possibly by adding wildcards or more match arms
+
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim class="rust line numbers">
+fn main() {
+    let age = 23;
+    let description = match age {
+        x if x < 13 => "child",
+        13..=17 => "teen",
+        18..=59 => "adult",
+        x if x > 59 => "senior",
+        _ => "Unknown"
+    };
+    println!("{} is {}", age, description);
+}
+            </code></pre>
+            <pre><code data-trim class="plaintext">
+              23 is adult
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Enums</h3>
+            <pre><code data-trim class="rust line-numbers">
+#[allow(dead_code)]
+enum TaskState {
+    Running,
+    Completed,
+    Failed
+}
+
+fn main() {
+    let state = TaskState::Completed;
+    let message = match state {
+        TaskState::Completed => "Completed",
+        _ => "Not completed or failed",
+    };
+    println!("{}", message);
+}
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Not just numbers</h3> 
+            <p class="run"><a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&code=%23%5Ballow(dead_code)%5D%0Aenum%20Outcome%20%7B%0A%20%20%20%20Hex(String)%2C%0A%20%20%20%20Number(i32)%2C%0A%7D%0A%0Afn%20main()%20%7B%0A%20%20%20%20let%20a%20%3D%20Outcome%3A%3AHex(%22FE%22.into())%3B%0A%20%20%20%20let%20message%20%3D%20match%20a%20%7B%0A%20%20%20%20%20%20%20%20Outcome%3A%3AHex(hex_str)%20%3D%3E%20format!(%22Hex%20string%20of%20%7B%7D%22%2C%20hex_str)%2C%0A%20%20%20%20%20%20%20%20Outcome%3A%3ANumber(num)%20%3D%3E%20format!(%22Number%20of%20%7B%7D%22%2C%20num)%2C%0A%20%20%20%20%7D%3B%0A%20%20%20%20println!(%22Outcome%20is%20%7B%7D%22%2C%20message)%3B%0A%7D%0A" target="_blank"></a></p>
+            <pre><code data-trim class="rust line numbers">
+#[allow(dead_code)]
+enum Outcome {
+    Hex(String),
+    Number(i32),
+}
+
+fn main() {
+    let a = Outcome::Hex("FE".into());
+    let message = match a {
+        Outcome::Hex(hex_str) => format!("Hex string of {}", hex_str),
+        Outcome::Number(num) => format!("Number of {}", num),
+    };
+    println!("Outcome is {}", message);
+}
+            </code></pre>
+            <pre><code data-trim class="plaintext">
+              Outcome is Hex string of FE
+            </code></pre>
+          </section>
+          <section>
+            <p>In fact Option and Result are Enums as well</p> 
+            <pre><code data-trim class="rust line-numbers">
+            enum Option&lt;T&gt; {
+                None,
+                Some(T),
+            }
+            </code></pre>
+
+            <pre><code data-trim class="rust line-numbers">
+            enum Result&lt;T, E&gt; {
+                Ok(T),
+                Err(E),
+            }
+            </code></pre>
+          </section>
+
+        </section>
+
+        <section>
+          <section>
+            <h3>Structs</h3>
+            <p>No OOP, uses implementation and Traits</p>
+          </section>
+
+
+          <section>
+            <p class="run"><a href="https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&code=%23%5Bderive(Debug)%5D%0Astruct%20Point3D%20%7B%0A%20%20%20%20x%3A%20f64%2C%0A%20%20%20%20y%3A%20f64%2C%0A%20%20%20%20z%3A%20f64%2C%0A%7D%0A%0Afn%20main()%20%7B%0A%20%20%20%20let%20p%20%3D%20Point3D%20%7B%0A%20%20%20%20%20%20%20%20x%3A%2010.0%2C%0A%20%20%20%20%20%20%20%20y%3A%205.2%2C%0A%20%20%20%20%20%20%20%20z%3A%206.5%2C%0A%20%20%20%20%7D%3B%0A%20%20%20%20println!(%22Point%20in%20space%3A%20%7B%3A%3F%7D%22%2C%20p)%3B%0A%7D" target="_blank"></a></p>
+            <pre><code data-trim class="rust line numbers">
+#[derive(Debug)]
+struct Point3D {
+    x: f64,
+    y: f64,
+    z: f64,
+}
+
+fn main() {
+    let p = Point3D {
+        x: 10.0,
+        y: 5.2,
+        z: 6.5,
+    };
+    println!("Point in space: {:?}", p);
+}
+            </code></pre>
+            <pre><code data-trim class="plaintext">Point in space: Point3D { x: 10.0, y: 5.2, z: 6.5 }
+            </code></pre>
+          </section>
+
+
+          <section>
+            <pre><code data-trim class="rust line numbers">
+#[derive(Debug)]
+struct Point3D {
+    x: f64,
+    y: f64,
+    z: f64,
+}
+
+impl Point3D {
+    fn move_by(self, x: f64, y: f64, z: f64) -> Point3D {
+        Point3D {
+            x: self.x + x,
+            y: self.y + y,
+            z: self.z + z,
+        }
+    }
+}
+            </code></pre>
+          </section>
+
+          <section>
+            <pre><code data-trim class="rust line numbers">
+
+fn main() {
+    let p = Point3D {
+        x: 10.0,
+        y: 5.2,
+        z: 6.5,
+    };
+    let p2 = p.move_by(0.1, 0.2, 0.3);
+    println!("Point in space: {:?}", p2);
+}
+            </code></pre>
+            <pre><code data-trim class="plaintext">
+Point in space: Point3D { x: 10.1, y: 5.4, z: 6.8 }
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Traits</h3>
+            <p>
+              A trait is a collection of methods defined for an unknown type:
+              Self. They can access other methods declared in the same trait.
+
+              Traits can be implemented for any data type.
+            </p>
+            <p><a href="https://doc.rust-lang.org/rust-by-example/trait.html" target="_blank">Traits - Rust By Example</a></p>
+            <p>Like an interface in other languages.</p>
+          </section>
+
+          <section>
+            Traits are used all around, e.g. in stdlib: 
+            <a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html" target="_blank">Iterator</a>,
+            <a href="https://doc.rust-lang.org/std/ops/trait.Add.html" target="_blank">Add</a>,
+            and many more.
+          </section>
+
+          <section><p>
+              Traits can be added to existing structs,
+              this extending and adding functionality and features.
+            </p></section>
+
+          <section>
+            <p>
+              Let's look at <a href="https://github.com/rayon-rs/rayon" target="_blank">Rayon</a> which provides
+              lightweight data parallelism for Rust.
+            </p>
+          </section>
+
+          
+          <section>
+            <h3>Sum of squares</h3> 
+            <pre><code data-trim class="rust line numbers">
+              fn sum_of_squares(input: &[i32]) -> i32 {
+                  input.iter()
+                       .map(|&i| i * i)
+                       .sum()
+              }
+            </code></pre>
+          </section>
+
+          <section>
+            <h3>Parallel Sum of squares with Rayon</h3> 
+            <pre><code data-trim class="rust line numbers">
+              use rayon::prelude::*;
+              fn sum_of_squares(input: &[i32]) -> i32 {
+                  input.par_iter() // &lt;-- just change that!
+                       .map(|&i| i * i)
+                       .sum()
+              }
+            </code></pre>
+          </section>
+        </section>
+
+        <section>
+          <h2>Example: nth prime</h2>
+            <pre><code data-trim class="rust line numbers">
+fn upper_limit_for_nth_prime(n: u32)-> usize {
+    if n < 6 {
+        return 100
+    }
+
+    let n = n as f64;
+    (n * (n.ln() + n.ln().ln())).ceil() as usize
+}
+
+/// Calculates nth prime (0 based) using 
+/// [Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
+pub fn nth(n: u32) -> u32 {
+    let limit = upper_limit_for_nth_prime(n) + 1;
+    let mut is_prime = vec![true; limit];
+    let mut total_found = 0;
+
+    for number in 2..limit {
+        if is_prime[number] {
+            if total_found == n {
+                return number as u32;
+            }
+            total_found += 1;
+            for num_mul in (number * number..limit).step_by(number) {
+                is_prime[num_mul] = false;
+            }
+        }
+    }
+
+    assert!(false, "Should not get here");
+    0
+}
+            </code></pre>
+        </section>
+
+        <section>
+          <section>
+            <h2>Rust and Python</h2>
+          </section>
+
+          <section>
+            <h2>PyO3</h2>
+            <p>
+              <a href="https://github.com/PyO3/pyo3">PyO3</a> supports Python 3.6 and up, PyPy.
+              Allows calling from Rust to Python and vice versa.
+            </p>
+          </section>
+
+          <section>
+            <pre><code data-trim class="rust">
+use pyo3::prelude::*;
+use pyo3::wrap_pyfunction;
+
+/// Formats the sum of two numbers as string.
+#[pyfunction]
+fn sum_as_string(a: usize, b: usize) -&gt; PyResult&lt;String&gt; {
+    Ok((a + b).to_string())
+}
+
+/// A Python module implemented in Rust.
+#[pymodule]
+fn string_sum(py: Python, m: &PyModule) -&gt; PyResult&lt;()&gt; {
+    m.add_function(wrap_pyfunction!(sum_as_string, m)?)?;
+
+    Ok(())
+}
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>setuptools-rust</h2>
+            <p><a href="https://github.com/PyO3/setuptools-rust">setuptools-rust</a> is a
+            plugin for setuptools to build Rust Python
+            extensions implemented with PyO3 or rust-cpython.</p>
+          </section>
+
+          <section>
+            <h2>Maturin</h2>
+            <p><a href="https://github.com/PyO3/maturin">Maturin</a> enables building and publishing crates with pyo3, rust-cpython and cffi bindings as well as rust binaries as python packages.</p>
+          </section>
+
+        </section>
+
+        <section>
+          <h2>More to explore</h2>
+          <ul>
+            <li>
+              <a href="https://www.rust-lang.org/what/wasm">WASM</a>,
+              <a href="" target="_blank">Yew</a> (framework for creating multi-threaded front-end web apps)
+            </li>
+            <li>async: <a href="https://tokio.rs/" target="_blank">Tokio</a>,
+              <a href="https://async.rs/" target="_blank">async-std</a>
+            </li>
+            <li>
+              Web: <a href="https://actix.rs/" target="_blank">Actix</a>,
+              <a href="https://rocket.rs/" target="_blank">Rocket</a>,
+              <a href="https://docs.rs/warp/0.3.1/warp/" target="_blank">Warp</a>
+            </li>
+            <li>
+              <a href="https://docs.rust-embedded.org/book/intro/no-std.html" target="_blank">no-std</a> (embedded)
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>resources</h2>
+          <ul>
+            <li><a href="https://doc.rust-lang.org/stable/book/" target="_blank">The Rust Programming Language</a>, official book</li>
+            <li><a href="https://doc.rust-lang.org/stable/rust-by-example/index.html" target="_blank">Rust by Example</a></li>
+            <li><a href="https://www.arewewebyet.org/" target="_blank">Are we web yet?</a></li>
+            <li><a href="http://arewemetayet.com/" target="_blank">Are we meta yet?</a> (links to more resources)</li>
+          </ul>
+        </section>
+
+        <section>
+          <p>Thanks!</p>
+          <p>Questions?</p>
+        </section>
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				hash: true,
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/highlight/highlight.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/line-numbers/line-numbers.js' },
+				]
+			});
+		</script>
+	</body>
+</html>

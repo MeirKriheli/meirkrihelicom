@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>AsyncIO</title>
+
+		<meta name="description" content="Python AsyncIO talk @ PyWeb-IL 52">
+		<meta name="author" content="Meir Kriheli">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>asyncio</h1>
+					<h3>Asynchronous I/O, event loop, coroutines and tasks</h3>
+					<p>
+						<a href="http://meirkriheli.com">Meir Kriheli</a> / <a href="http://twitter.com/mkriheli">@mkriheli</a>
+					</p>
+				</section>
+
+				<section>
+				<h2>Async IO?</h2>
+					<p>
+						<a href="https://en.wikipedia.org/wiki/Asynchronous_I/O">Wikipedia</a>:
+						a form of input/output processing that permits other processing to continue before the transmission has finished.
+					</p>
+				</section>
+
+				<section>
+					<section>
+						<h2>Different solutions to the problem</h2>
+						<p>
+							Quick overview
+						</p>
+					</section>
+
+					<section>
+						<h3>Multiple processes</h3>
+						<p>System resources.<p>
+						<p>Process communication is a problem.</p>
+					</section>
+
+					<section>
+						<h3>Threads</h3>
+						<p>
+							Shared memory is an advantage
+						</p>
+						<p class="fragment">
+							And a problem
+						</p>
+
+						<p>
+
+						</p>
+
+						<p class="fragment">
+							GIL on CPython.
+						</p>
+					</section>
+
+					<section>
+						<h3>Green threads</h3>
+						<p>
+							Avoids synchronization problems. cooperative.
+						</p>
+						<p class="fragment">
+							Managed in user-space.
+						</p>
+
+						<p class="fragment">
+							No operating system optimization for native threads
+						</p>
+
+						<p class="fragment">
+							Quite a hack on Python (gevent + monkey patching).
+						</p>
+
+					</section>
+
+					<section>
+						<h3>Asynchronous IO</h3>
+						<p>
+							Single thread, Single process, cooperative multitasking.
+						</p>
+
+						<p class="fragment">
+							Reduces context switches and overhead
+						</p>
+						<p class="fragment">
+							Need to make sure it's cooperative, CPU intensive code will block.
+						</p>
+						<p class="fragment">
+							Can't use <a href="https://docs.python.org/3/library/asyncio-dev.html#concurrency-and-multithreading">blocking standard or 3rd party libraries as is</a>.
+						</p>
+
+						<aside class="notes">
+							<p>On Node for example it's a lot easier, everything is async by default.</p>
+
+							<p>
+								Story about code review I did once for a twisted project.
+							</p>
+
+							<p>
+								Blocking code should run in a thread and join the main loop when done.
+							</p>
+						</aside>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h3>A trend started with the web?</h3>
+						<p class="fragment">Nope. GUIs been doing it for a long time.</p>
+					</section>
+
+					<section>
+						<ol>
+							<li>Main event loop</li>
+							<li class="fragment">
+									Event comes in (e.g: Button clicked)
+									<img src="mouse_leftclick.svg" alt="mouse clicked" id="mouse-click-image">
+								</li>
+							<li class="fragment">Handler called</li>
+							<li class="fragment">Back to the loop (step 1)</li>
+						</ol>
+					</section>
+					<section data-transition="slide" data-background="#b5533c" data-background-transition="zoom">
+						<p>
+							Good GUI developers know:<br>Don't block the main event loop (Looking
+							at you Swing).
+						</p>
+					</section>
+
+					<section>
+						<h3>Benefits for the Web</h3>
+						<p>
+							Handle many connections without an extra overhead.
+						</p>
+						<p>
+							Nginx, Lighttpd, NodeJS, Twisted, Tornado ...
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>What about Python?</h2>
+						<p class="fragment">Not new</p>
+						<p class="fragment">
+							<a href="https://docs.python.org/release/1.5.2p2/lib/module-asyncore.html">asyncore</a> &amp; asynchat available
+							since Python 1.5.2.
+						</p>
+						<p class="fragment">Uses select (or poll).</p>
+						<p class="fragment">Virtually nobody used it.</p>
+					</section>
+
+					<section>
+						<p>
+							Twisted
+						</p>
+						<p>
+							Tornado
+						</p>
+						<p>
+							gevent
+						</p>
+					</section>
+
+				</section>
+
+				<section>
+					<section>
+						<h2>asyncio</h2>
+						<p>
+							Uses <code>epoll</code>, <code>kexec</code>
+						</p>
+						<p class="fragment">
+							Feedback from Twisted, Tornado, gevent, etc.
+						</p>
+						<p class="fragment">
+							Inter operate, not replace them.
+						</p>
+
+						<p class="fragment">
+							Defines an interface which can be implemented on top of other event loops.
+						</p>
+
+						<aside class="notes">
+							Before one couldn't use Twisted modules in Tornado, etc.
+
+							Now modules can work for a single interface on different event loops.
+						</aside>
+					</section>
+
+
+					<section>
+						<h3>Milestones</h3>
+						<ul>
+							<li>Generators. 2.5 added the <code>send()</code> method</li>
+							<li class="fragment">3.3: <code>yield from</code>, generators  can return values</li>
+							<li class="fragment">PEP 3153 got people talking about it</li>
+							<li class="fragment">PEP 3156 tulip: reference implementation</li>
+							<li class="fragment">Turned into asyncio in 3.4</li>
+							<li class="fragment">Futures, <code>add_done_callback()</code> for chaining.</li>
+							<li class="fragment">3.5: <code>async</code>,<code>await</code></li>
+						</ul>
+
+						<aside class="notes">
+							<ul>
+								<li>Before 3.3, generators couldn't return a value, was an error.</li>
+								<li>Futures: Were available for threads, tied to thread pools.</li>
+								<li>Instead of <code>@coroutine</code> and <code>yield from</code></li>
+							</ul>
+						</aside>
+					</section>
+
+					<section>
+						<h3>Some terms</h3>
+						<ul>
+							<li>Coroutines: a generator function, can receive values, decorated with <code>@coroutine</code> or <code>async def</code></li>
+							<li>Future: promise of a result or an error</li>
+							<li>Task: Future which runs a coroutine</li>
+						</ul>
+						<p>
+							From: <a href="http://www.slideshare.net/saghul/asyncio/35">http://www.slideshare.net/saghul/asyncio/35</a>
+						</p>
+						<p>
+							See it for a in depth overview of the subject.
+						</p>
+
+					</section>
+
+					<section>
+						<h3>Some examples Python docs</h3>
+						<a href="https://docs.python.org/3/library/asyncio-task.html#example-hello-world-coroutine">https://docs.python.org/3/library/asyncio-task.html</a>
+
+						<aside class="notes">
+							Focus on Chain coroutines and the diagram.
+						</aside>
+					</section>
+
+				</section>
+
+
+				<section>
+					<h3>Python Async IO Resources</h3>
+
+					<p>
+						<a href="http://asyncio.org/">asyncio.org</a>
+					</p>
+
+
+					<ul>
+						<li>
+							3rd party libraries
+						</li>
+
+						<li>
+							Documentation
+						</li>
+
+						<li>
+							Talks
+						</li>
+
+						<li>
+							Tutorials
+						</li>
+
+						<li>
+							Blog posts
+						</li>
+
+					</ul>
+				</section>
+
+				<section>
+					<section>
+						<h2>Demo</h2>
+						<ul>
+							<li>Agent collecting data from an api.</li>
+							<li>Server listening for db changes, updates clients via web sockets.</li>
+						</ul>
+						<p>
+							<a href="https://github.com/MeirKriheli/asyncio-demo">github.com/MeirKriheli/asyncio-demo</a>
+						</p>
+					</section>
+
+					<section>
+						<h3>aiohttp</h3>
+						<p>
+							HTTP client/server for asyncio
+						</p>
+
+						<ul>
+							<li>Supports both HTTP Client and HTTP Server.</li>
+							<li>Supports both Server WebSockets and Client WebSockets out-of-the-box.</li>
+							<li>Web-server has Middlewares, Signals and pluggable routing.</li>
+						</ul>
+					</section>
+					<section>
+						<h3>RethinkDB</h3>
+						<ul>
+							<li>Open-source, scalable document based database built from the ground up for the realtime web.</li>
+							<li>Instead of polling for changes, the developer can tell RethinkDB to continuously push updated query results to applications in realtime.</li>
+							<li>Supports asyncio's event loop since version 2.1 of the python driver.</li>
+						</ul>
+					</section>
+
+					<section>
+						<h3>Let's see it</h3>
+					</section>
+				</section>
+
+				<section>
+					<h2>Thank you</h2>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

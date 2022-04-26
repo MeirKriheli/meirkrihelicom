@@ -1,0 +1,6 @@
+[view]
+  other = "View"
+
+[slideshow]
+  other = '{{ .Get "title" }} slideshow'
+

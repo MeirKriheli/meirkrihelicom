@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>VueJS</title>
+
+		<meta name="description" content="VueJS talk @ PyWeb-IL 69">
+		<meta name="author" content="Meir Kriheli">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-state='main'>
+					<h1>VueJS</h1>
+					<h3>The Progressive JavaScript Framework </h3>
+					<p>
+						<a href="http://meirkriheli.com">Meir Kriheli</a> / <a href="http://twitter.com/mkriheli">@mkriheli</a>
+					</p>
+          <p>PyWeb-IL 69, Oct 2, 2017</p>
+				</section>
+
+				<section>
+          <section>
+            <h2>Short History</h2>
+            <ul>
+              <li>Created by Evan You</li>
+              <li>Worked at Google</li>
+              <li>Liked some concepts in Angular</li>
+              <li>Not the complexity</li>
+            </ul>
+          </section>
+
+          <section data-state="thought">
+            &quot;I figured, what if I could just extract the part that I really liked about Angular and build something really lightweight without all the extra concepts involved?&quot;
+          </section>
+          <section>
+            <ul>
+              <li>First released February 2014</li>
+              <li>Made a splash at Reddit, HN, etc.</li>
+              <li>Successful in China</li>
+              <li>Version 2.0 Released at April 2016</li>
+              <li>Made popular by Laravel community</li>
+              <li>Adopted by quote few project, e.g. <a href="https://about.gitlab.com/2016/10/20/why-we-chose-vue/">GitLab</a></li>
+            </ul>
+          </section>
+
+          <section>
+            <ul>
+              <li>Successful open source product</li>
+              <li>Stars, community, closed bugs</li>
+              <li>Evan is self sustained via Patreon</li>
+            </ul>
+          </section>
+				</section>
+
+        <section>
+          <section>
+            <h2>Progressive?</h2>
+            <ul>
+              <li>Less opinionated</li>
+              <li>Incrementally adoptable architecture</li>
+              <li>Can start simple - enhance a page</li>
+              <li>e.g.: Embed into Django or Jinja template</li>
+              <li>Up to full blown SPA</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Core</h2>
+            <ul>
+              <li>Performance and size</li>
+              <li>Focus on making UI devel more approachable</li>
+              <li>Learning from other frameworks pros and cons</li>
+              <li>Declarative rendering</li>
+              <li>Component Composition</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Advanced Features</h2>
+            <h3>Officially maintained!</h3>
+            <ul>
+              <li>CLI starter (webpack, browserify, ES2015, scss)</li>
+              <li>Single file components</li>
+              <li>Routing</li>
+              <li>State management</li>
+            </ul>
+          </section>
+
+        </section>
+
+        <section data-state="docs">
+          <h2>Good, easy to follow documentation</h2>
+        </section>
+
+        <section>
+          <section data-state="blueprint">
+            <h2>Basics</h2>
+          </section>
+
+          <section>
+            <h2>Basic Vue App</h2>
+            <pre><code>
+&lt;script src=&quot;https://unpkg.com/vue&quot;&gt;&lt;/script&gt;
+
+&lt;div id=&quot;app&quot;&gt;
+  &lt;p&gt;{{ message }}&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  new Vue({
+    el: '#app', // &lt;- Element to mount the app on
+    data: {     // &lt;- Reactive data
+      message: 'Hello Vue.js!'
+    }
+  })
+&lt;/script&gt;
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Bound HTML attributes</h2>
+            <p>For reactive HTML attributes use <code>v-bind</code></p>
+            <pre><code>
+&lt;img src=&quot;{{ imgURL }}&quot;&gt; &lt;-- Won't work --&gt;
+&lt;img v-bind:src=&quot;imgURL&quot;&gt; &lt;-- That's it --&gt;
+            </code></pre>
+            or shorthand syntax:
+            <pre><code>
+&lt;img :src=&quot;imgURL&quot;&gt; &lt;-- Nice --&gt;
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Events</h2>
+            <p>Use <code>v-on</code></p>
+            <pre><code>
+&lt;button v-on:click=&quot;message = 'yo'&quot;&gt;Change message&lt;/button&gt;
+            </code></pre>
+            or shorthand syntax:
+            <pre><code>
+&lt;button @click=&quot;message = 'yo'&quot;&gt;Change message&lt;/button&gt;
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Event Modifiers</h2>
+            <p>
+              Control DOM events without writing code. Some modifiers from the docs:
+            </p>
+            <pre><code>
+&lt;!-- the click event's propagation will be stopped --&gt;
+&lt;a v-on:click.stop=&quot;doThis&quot;&gt;&lt;/a&gt;
+
+&lt;!-- the submit event will no longer reload the page --&gt;
+&lt;form v-on:submit.prevent=&quot;onSubmit&quot;&gt;&lt;/form&gt;
+
+&lt;!-- modifiers can be chained --&gt;
+&lt;a v-on:click.stop.prevent=&quot;doThat&quot;&gt;&lt;/a&gt;
+
+&lt;!-- just the modifier --&gt;
+&lt;form v-on:submit.prevent&gt;&lt;/form&gt;
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>For key and mouse events too</h2>
+            <p>
+              <a href="https://vuejs.org/v2/guide/events.html#Key-Modifiers">See the docs</a>
+            </p>
+            <pre><code>
+&lt;!-- only call vm.submit() when the keyCode is 13 --&gt;
+&lt;input v-on:keyup.enter=&quot;submit&quot;&gt;
+
+&lt;!-- Alt + C --&gt;
+&lt;input @keyup.alt.67=&quot;clear&quot;&gt;
+
+&lt;!-- Ctrl + Click --&gt;
+&lt;div @click.ctrl=&quot;doSomething&quot;&gt;Do something&lt;/div&gt;
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Methods</h2>
+            <pre><code>&lt;div id=&quot;app&quot;&gt;
+  &lt;p&gt;{{ message }}&lt;/p&gt;
+  &lt;button @click=&quot;changeMessage&quot;&gt;&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  new Vue({
+    el: '#app', // &lt;- Element to mount the app on
+    data: {     // &lt;- Reactive data
+      message: 'Hello Vue.js!'
+    },
+    methods: {
+      changeMessage: function() {
+        this.message = 'Yo';
+      }
+    }
+  })
+&lt;/script&gt;</code></pre>
+          </section>
+
+          <section>
+            <h2>Proxying</h2> 
+            <p>Note the usage of <code>this</code> and the way the template uses
+              <code>data</code> and <code>methods</code> without their keys.
+            </p>
+            <p>Vue proxies them for us, some with getter/setters
+            to track data changes. It also handles binding <code>this</code>.</p>
+          </section>
+
+          <section>
+            <h2>Proxying Caveats</h2>
+            <p>Sometimes Vue can't detect property changes, e.g.:</p>
+            <pre><code>arr[10] = 12;</code></pre>
+            <p>or when adding keys dynamically to <code>data</code>.</p>
+            <p>In those case use <code>Vue.set</code>:</p>
+            <pre><code>Vue.set(arr, 10, 12);</code></pre>
+            <p>See also <a href="https://vuejs.org/v2/guide/reactivity.html">Reactivity in Depth</a>.</p>
+          </section>
+
+          <section>
+            <h2>Computed properties</h2>
+            <pre><code>&lt;div id=&quot;example&quot;&gt;
+  &lt;p&gt;Original message: &quot;{{ message }}&quot;&lt;/p&gt;
+  &lt;p&gt;Computed reversed message: &quot;{{ reversedMessage }}&quot;&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+            <pre><code>var vm = new Vue({
+  el: '#example',
+  data: {
+    message: 'Hello'
+  },
+  computed: {
+    // a computed getter
+    reversedMessage: function () {
+      // `this` points to the vm instance
+      return this.message.split('').reverse().join('')
+    }
+  }
+})</code></pre>
+            <p>
+              Unlike methods, computed properties are cached based on their dependencies.
+            </p>
+          </section>
+        </section>
+
+        <section data-state="source-code">
+          <h2><strike>Hammer</strike> Fiddle time</h2>
+          <p>Enough theory, let's have some fun with <a href="https://jsfiddle.net/chrisvfritz/50wL7mdz/">JSFiddle</a>.</p>
+        </section>
+
+        <section>
+          <section data-state="control-flow">
+            <h1>Control Flow Directives</h1>
+          </section>
+          <section>
+            <h2>Conditional</h2>
+            <ul>
+              <li><pre>v-if</pre></li>
+              <li><pre>v-else</pre></li>
+            </ul>
+            <p>Add/Remove items from DOM:</p>
+            <pre><code>
+&lt;div v-if=&quot;Math.random() &gt; 0.5&quot;&gt;
+  Now you see me
+&lt;/div&gt;
+&lt;div v-else&gt;
+  Now you don't
+&lt;/div&gt;
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>v-else-if</h2>
+            <p>Since 2.1.0</p>
+            <pre><code>
+&lt;div v-if=&quot;type === 'A'&quot;&gt;
+  A
+&lt;/div&gt;
+&lt;div v-else-if=&quot;type === 'B'&quot;&gt;
+  B
+&lt;/div&gt;
+&lt;div v-else-if=&quot;type === 'C'&quot;&gt;
+  C
+&lt;/div&gt;
+&lt;div v-else&gt;
+  Not A/B/C
+&lt;/div&gt;
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>v-show</h2>
+            <p>Always rendered in DOM, toggles <code>display</code> style.</p>
+          </section>
+
+          <section>
+            <h2>List rendering: <code>v-for</code></h2>
+            <pre><code>&lt;ul id=&quot;example-1&quot;&gt;
+  &lt;li v-for=&quot;item in items&quot;&gt;
+    {{ item.message }}
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ul id=&quot;example-2&quot;&gt;
+  &lt;li v-for=&quot;(item, index) in items&quot;&gt;
+    {{ parentMessage }} - {{ index }} - {{ item.message }}
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div v-for=&quot;(value, key) in object&quot;&gt;
+  {{ key }}: {{ value }}
+&lt;/div&gt;
+
+</code></pre>
+          </section>
+        </section>
+
+        <section data-state="forms">
+          <h2>Form Inputs</h2>
+          <p>Two way data binding with <code>v-model</code>:</p>
+          <pre><code>
+&lt;input v-model=&quot;message&quot; placeholder=&quot;edit me&quot;&gt;
+&lt;p&gt;Message is: {{ message }}&lt;/p&gt;
+          </code></pre>
+          <p>Modifiers: <code>.lazy</code>, <code>.number</code>, <code>.trim</code>.</p>
+          <p>Let's look at 
+            <a href="https://vuejs.org/v2/guide/forms.html">the docs</a>.</p>
+        </section>
+
+        <section>
+          <section data-state="components">
+            <h2>Components</h2>
+            <p>Pretty much like the <code>Vue</code> instance.</p>
+          </section>
+
+          <section>
+            <pre><code>Vue.component('panel', {  // registered globally
+  props: ['message'], // declare the props the component accepts
+  data: function() { // Must, otherwise will be shared by instances
+    return {
+      counter: 0
+    }
+  },
+  template: '&lt;div class=&quot;panel&quot;&gt;{{ message }}&lt;/div&gt;'
+});</code></pre>
+            <pre><code>
+&lt;panel message=&quot;hello!&quot;&gt;&lt;/panel&gt;
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Data Flow</h2>
+            <ul>
+              <li>Top-to-Bottom (parent to child)</li>
+              <li>Use <code>this.$emit()</code> to parent changes.</li>
+              <li>Use a <a href="https://vuejs.org/v2/guide/components.html#Non-Parent-Child-Communication">Vue() instance as event bus</a> for cross component notifications.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Slots</h2>
+            <p>Follows <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot">HTML template standards</a>.</p>
+            <p>Like Angular 1's <code>transclude</code>.</p>
+            <pre><code>&lt;-- component template --&gt;
+&lt;div&gt;
+  &lt;h2&gt;I'm the child title&lt;/h2&gt;
+  &lt;slot&gt;
+    This will only be displayed if there is no content
+  &lt;/slot&gt;
+&lt;/div&gt;
+
+&lt;!-- parent template --&gt;
+&lt;div&gt;
+  &lt;h1&gt;I'm the parent title&lt;/h1&gt;
+  &lt;my-component&gt;
+    &lt;p&gt;This is some original content&lt;/p&gt;
+    &lt;p&gt;Will be displayed inside the slot&lt;/p&gt;
+  &lt;/my-component&gt;
+&lt;/div&gt;</code></pre>
+          </section>
+        </section>
+
+        <section>
+
+          <section>
+            <h2>CLI detour</h2>
+            <p>Play with build tools, single file components, browser dev tools, and ES2015 goodness.</p>
+          </section>
+
+          <section>
+            <pre><code>
+$ # install vue-cli
+$ npm install --global vue-cli
+$ # create a new project using the "webpack" template
+$ vue init webpack my-project
+# install dependencies and go!
+$ cd my-project
+$ npm install
+$ npm run dev
+            </code></pre>
+          </section>
+
+          <section data-state="source-code">
+            <h2>Play time</h2>
+          </section>
+        </section>
+
+
+        <section data-state="ecosystem">
+          <h2>Rich Ecosystem</h2>
+          <ul>
+            <li><a href="http://quasar-framework.org/" target="_blank">Quasar Framework</a> - Responsive, PWAs, hybrid mobile apps</li>
+            <li><a href="https://weex.incubator.apache.org/" target="_blank">Weex</a> - Native mobile apps</li>
+            <li><a href="https://buefy.github.io/#/" target="_blank">Buefy</a> - Lightweight UI components</li>
+            <li><a href="https://nuxtjs.org/" target="_blank">NUXT.js</a> - Server side rendering and static generation.</li>
+          </ul>
+          <p><a href="https://github.com/vuejs/awesome-vue" target="_blank">Awesome Vue.js</a> - 
+    A curated list of Vue.js related things.
+.</p>
+        </section>
+
+        <section data-state="kung-fu">
+          <img src="kung-fu.gif" alt="I know kung fu" style="display: block; border: 0 none; width: 100%;">
+        </section>
+				<section data-state="thanks">
+          <p>Currently @Vast Data</p>
+          <h4>We're hiring: Python, C++, QA and Automation</h4>
+          <p>&nbsp;</p>
+					<h2>Thank you</h2>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'socket.io/socket.io.js', async: true },
+          { src: 'plugin/notes-server/client.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
