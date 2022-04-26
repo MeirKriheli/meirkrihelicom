@@ -23,6 +23,8 @@
     --link-color: var(--orange);
     --link-hover-color: var(--red);
     --bg-lighten: var(--base3-lighten);
+    --footer-bg-color: var(--orange);
+    --footer-fg-color: var(--base3);
 }
 
 
@@ -48,6 +50,12 @@ main h1, main h2, main h3 {
 
 .bg-alt-background {
   background: var(--alt-bg-color);
+}
+
+.site-footer {
+  background: var(--footer-bg-color);
+  color: var(--footer-fg-color);
+  box-shadow: inset 0 5px 5px rgba(0,0,0,0.3);
 }
 
 @font-face {
@@ -130,4 +138,8 @@ main figure img {
 
 .pr6_5  {
   padding-right: 13rem;
+}
+
+.ananke-socials a {
+  color: #fdf6e3;
 }
