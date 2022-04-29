@@ -27,7 +27,6 @@
     --footer-fg-color: var(--base3);
 }
 
-
 .bg-solarized {
 	background: var(--bgcolor) url(/img/body_bg.png);
 }
@@ -55,6 +54,9 @@ main h1, main h2, main h3 {
 .site-footer {
   background: var(--footer-bg-color);
   color: var(--footer-fg-color);
+}
+
+.box-shadow-inset {
   box-shadow: inset 0 5px 5px rgba(0,0,0,0.3);
 }
 
@@ -142,4 +144,16 @@ main figure img {
 
 .ananke-socials a {
   color: #fdf6e3;
+}
+
+#main-navigation a {
+  color: var(--base1);
+}
+
+#main-navigation a:hover, #main-navigation a.active {
+  color: var(--orange);
+}
+
+.text-shadow {
+	text-shadow: #000 1px 1px 2px;
 }
