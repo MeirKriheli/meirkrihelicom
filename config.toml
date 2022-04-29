@@ -16,10 +16,21 @@ enableRobotsTXT = true
     weight = 1
     contentDir = "content/he"
     languageName = "Hebrew"
+    [languages.he.menu]
+      [[languages.he.menu.main]]
+      name = 'תגים'
+      pageref  = '/tags'
+      weight = 1
+     
   [languages.en]
     weight = 2
     contentDir = "content/en"
     languageName = "English"
+    [languages.en.menu]
+      [[languages.en.menu.main]]
+      name = 'Tags'
+      pageref = '/tags'
+      weight = 1
 
 [params]
   body_classes = "alef bg-solarized"
