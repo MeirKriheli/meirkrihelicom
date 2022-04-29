@@ -15,9 +15,11 @@ enableRobotsTXT = true
     languageDirection = "rtl"
     weight = 1
     contentDir = "content/he"
+    languageName = "Hebrew"
   [languages.en]
     weight = 2
     contentDir = "content/en"
+    languageName = "English"
 
 [params]
   body_classes = "alef bg-solarized"
