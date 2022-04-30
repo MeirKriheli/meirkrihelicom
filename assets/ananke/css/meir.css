@@ -134,7 +134,7 @@ main figure img {
   box-shadow: -4px 4px 8px rgba(0,0,0,0.25);
 }
 
-.nested-links a {
+.nested-links a, .orange {
   color: var(--link-color);
 }
 

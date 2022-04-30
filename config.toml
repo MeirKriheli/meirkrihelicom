@@ -38,6 +38,7 @@ enableRobotsTXT = true
   text_color = "fg-solarized"
   post_content_classes = "alef tj"
   background_color_class = "bg-alt-background"
+  recent_posts_number = 5
 
 
 [[params.ananke_socials]]
