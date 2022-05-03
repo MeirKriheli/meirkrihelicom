@@ -6,6 +6,7 @@ defaultContentLanguage = 'he'
 SectionPagesMenu = "main"
 googleAnalytics = ""
 enableRobotsTXT = true
+Paginate = 9
 
 [permalinks]
   posts = '/:year/:month/:slug/'
@@ -82,3 +83,5 @@ suffixes = ["rss"]
     [markup.goldmark.parser]
       [markup.goldmark.parser.attribute]
       block = true
+    [markup.goldmark.renderer]
+      unsafe = true
