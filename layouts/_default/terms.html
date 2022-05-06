@@ -21,7 +21,7 @@
           {{ $weigth := mul $weigth 3 }}
           {{ $currentFontSize := (add $smallestFontSize (mul (sub $largestFontSize $smallestFontSize) $weigth)) }}
             <a href="{{ "/tags/" | relURL }}{{ $name | urlize }}" 
-            class="link br-pill ba dib tagcloud-item ph3 pv2 mv1 orange" style="font-size: {{ $currentFontSize }}rem;">
+            class="link br-pill ba dib tagcloud-item ph4 pv3 mv1 orange grow" style="font-size: {{ $currentFontSize }}rem;">
               {{ $name }}<sup>{{ $tagCount }}</sup>
             </a>
         {{ end }}
