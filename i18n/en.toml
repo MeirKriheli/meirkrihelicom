@@ -4,3 +4,6 @@
 [slideshow]
   other = '{{ .Get "title" }} slideshow'
 
+
+[imagecredits]
+  other = 'Image Credits'

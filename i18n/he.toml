@@ -3,3 +3,6 @@
 
 [slideshow]
   other = 'מצגת {{ .Get "title" }}'
+
+[imagecredits]
+  other = 'קרדיטים לתמונות'

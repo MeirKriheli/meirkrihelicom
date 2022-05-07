@@ -1,13 +1,16 @@
 <footer class="site-footer bottom-0 w-100 pa3 box-shadow-inset" role="contentinfo">
-  <div class="flex-l justify-between tc">
+  <div class="flex-l justify-between tc items-center">
     <div class="fw4">
-      <a class="f4 fw4 hover-white no-underline white-70 dib-ns pv2 ph3" href="{{ .Site.BaseURL }}" >
+      <a class="f4 fw4 hover-white no-underline dib-ns pv2 ph3" href="{{ .Site.BaseURL }}" >
         &copy; {{ with .Site.Copyright | default .Site.Title }} {{ . | safeHTML }} {{ now.Format "2006"}} {{ end }}
-        <a rel="license" href="//creativecommons.org/licenses/by-sa/3.0/" class="dib v-mid">
-          <img class="dib" alt="Content licensed under Attribution-ShareAlike 3.0 Unported" src="//i.creativecommons.org/l/by-sa/3.0/88x31.png">
-        </a>
-    </div>
       </a>
-      <div>{{ partial "social-follow.html" . }}</div>
+      <a rel="license" href="//creativecommons.org/licenses/by-sa/3.0/" class="dib v-mid">
+        <img class="dib" alt="Content licensed under Attribution-ShareAlike 3.0 Unported" src="//i.creativecommons.org/l/by-sa/3.0/88x31.png">
+      </a>
+    </div>
+    <div>
+      <a class="f4 fw4 no-underline" href="{{ ref .  "/credits.md" }}">{{ i18n "imagecredits" }}</a>
+    </div>
+    <div>{{ partial "social-follow.html" . }}</div>
   </div>
 </footer>

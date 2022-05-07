@@ -51,7 +51,7 @@ main h1, main h2, main h3 {
   background: var(--alt-bg-color);
 }
 
-.site-footer {
+.site-footer, .site-footer a {
   background: var(--footer-bg-color);
   color: var(--footer-fg-color);
 }
