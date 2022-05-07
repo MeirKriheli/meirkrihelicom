@@ -150,7 +150,7 @@ main figure img {
   color: #fdf6e3;
 }
 
-#main-navigation a {
+#main-navigation a, .solarized-base1 {
   color: var(--base1);
 }
 
