@@ -1,6 +1,6 @@
 {{ $featured_image := partial "func/GetFeaturedImage.html" . }}
 <article class="bb b--black-10">
-  <div class="db pv4 ph3 ph0-l no-underline dark-gray">
+  <div class="db pv4 ph3 ph0-l no-underline fg-solarized">
     <div class="flex flex-column flex-row-ns">
       {{ if $featured_image }}
           {{/* Trimming the slash and adding absURL make sure the image works no matter where our site lives */}}
@@ -11,8 +11,8 @@
           </a>
         </div>
       {{ end }}
-      <div class="blah w-100{{ if $featured_image }} w-60-ns {{ cond (eq $.Site.Language.LanguageDirection "rtl") "pr3-ns" "pl3-ns" }}{{ end }}">
-        <h1 class="f3 fw1 athelas mt0 lh-title">
+      <div class="w-100{{ if $featured_image }} w-60-ns {{ cond (eq $.Site.Language.LanguageDirection "rtl") "pr3-ns" "pl3-ns" }}{{ end }}">
+        <h1 class="f3 fw1 mt0 lh-title">
           <a href="{{.RelPermalink}}" class="color-inherit dim link">
             {{ .Title }}
             </a>

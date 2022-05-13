@@ -7,4 +7,3 @@ featured_image: '/img/splash/welcome.jpg'
 להציץ [במצגות]({{< ref "talks" >}}) שהעברתי במסגרת אירועים
 שונים או [בארגז הכלים]({{< ref "toolbox" >}}) החביבים עלי ולקרוא 
 [אודותי]({{< ref "about" >}}). 
-{.welcome .tj .nested-links .w-100 .f5}

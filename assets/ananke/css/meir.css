@@ -159,7 +159,11 @@ main figure img {
 }
 
 .text-shadow {
-	text-shadow: #000 1px 1px 2px;
+  text-shadow: #657b83 1px 0 1px;
+}
+
+html[dir=rtl] .text-shadow {
+  text-shadow: #657b83 -1px 0 1px;
 }
 
 html[dir="rtl"] .welcome {
