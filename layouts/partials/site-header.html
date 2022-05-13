@@ -6,7 +6,7 @@
     <div class="{{ .Site.Params.cover_dimming_class | default "bg-black-60" }}">
       {{ partial "site-navigation.html" .}}
       <div class="tc pv4 pv6-l ph3 ph4-ns">
-        <h1 class="f2 f-subheadline-l fw2 solarized-base1 mb0 lh-title">
+        <h1 class="f2 f-subheadline-l fw2 solarized-base1 mb0 lh-title text-shadow">
           {{ .Title | default .Site.Title }}
         </h1>
         {{ with .Params.description }}
