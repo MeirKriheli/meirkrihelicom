@@ -28,6 +28,7 @@ disqusShortname = 'meirkriheli'
     weight = 2
     contentDir = "content/en"
     languageName = "English"
+    languageDirection = "ltr"
     [languages.en.menu]
       [[languages.en.menu.main]]
       name = 'Tags'
