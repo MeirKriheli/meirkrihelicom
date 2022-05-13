@@ -7,7 +7,14 @@ module.exports = {
           './layouts/**/*.html',
           './content/**/*.html'
       ],
-      safelist: ['alef', 'bg-solarized', 'fg-solarized', 'bg-alt-background', /^bx-/],
+        safelist: [
+          'alef',
+          'welcome',
+          'bg-solarized',
+          'fg-solarized',
+          'bg-alt-background',
+          /^bx-/
+      ],
     }
   }
 };

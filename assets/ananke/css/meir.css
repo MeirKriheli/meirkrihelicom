@@ -163,11 +163,12 @@ main figure img {
 }
 
 html[dir="rtl"] .welcome {
+  padding-left: 0;
   padding-right: 50px;
   background: url(/img/meir_rtl.png) 100% 5px no-repeat;
 }
 
-html[dir="ltr"] .welcome {
+.welcome {
   padding-left: 50px;
-  background: url(/img/meir_rtl.png) 0 2px no-repeat;
+  background: url(/img/meir_ltr.png) 0 2px no-repeat;
 }
