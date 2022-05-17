@@ -13,6 +13,7 @@ module.exports = {
           'bg-solarized',
           'fg-solarized',
           'bg-alt-background',
+          'highlight',
           /^bx-/
       ],
     }

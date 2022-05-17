@@ -187,3 +187,13 @@ html[dir="rtl"] .welcome {
   background: var(--bg-lighten);
   color: var(--fg-color);
 }
+
+.highlight {
+  direction: ltr;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* purgecss ignore */
+.highlight > pre {
+  padding: 1rem;
+}
