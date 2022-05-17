@@ -20,6 +20,7 @@
     --bgcolor: var(--base3);
     --alt-bg-color: var(--base03);
     --fg-color: var(--base01);
+    --alt-fg-color: var(--base3);
     --link-color: var(--orange);
     --link-hover-color: var(--red);
     --bg-lighten: var(--base3-lighten);
@@ -41,6 +42,11 @@ body {
 
 .fg-solarized {
 	color: var(--fg-color);
+}
+
+
+.fg-alt-solarized {
+  color: var(--alt-fg-color);
 }
 
 main h1, main h2, main h3 {
