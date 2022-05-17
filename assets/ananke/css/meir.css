@@ -176,3 +176,8 @@ html[dir="rtl"] .welcome {
   padding-left: 50px;
   background: url(/img/meir_ltr.png) 0 2px no-repeat;
 }
+
+.pagination li a {
+  background: var(--bg-lighten);
+  color: var(--fg-color);
+}
