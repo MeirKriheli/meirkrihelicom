@@ -5,6 +5,7 @@ date: 2022-05-27T12:02:32+03:00
 tags:
 - Hugo
 - Django
+- BiDi
 - floss
 draft: true
 summary: >
