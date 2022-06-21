@@ -58,6 +58,16 @@
       <div class="mt5">
         {{- partial "tags.html" . -}}
       </div>
+      {{ if .IsTranslated }}
+      <p class="f5 b mt5">Translations</p>
+      <ul>
+      {{ range .Translations }}
+      <li>
+        <a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}">{{ .Language.LanguageName }}: <span dir="{{ .Language.LanguageDirection }}">{{.Title }}</span></a>
+      </li>
+      {{ end}}
+      </ul>
+      {{ end }}
       <div class="mt6 instapaper_ignoref">
       {{ if .Site.DisqusShortname }}
         {{ partial "disqus.html" . }}
