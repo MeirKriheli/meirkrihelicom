@@ -21,7 +21,7 @@
           {{ if .IsTranslated }}
           {{ range .Translations }}
           <li class="list f5 f4-ns fw4 dib {{ cond (eq $.Site.Language.LanguageDirection "rtl") "pl3" "pr3" }}">
-            <a class="hover-white no-underline text-shadow" href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+            <a class="hover-white no-underline text-shadow" href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}">{{ .Language.LanguageName }}</a>
           </li>
           {{ end}}
           {{ end }}
