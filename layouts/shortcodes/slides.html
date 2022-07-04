@@ -1,5 +1,5 @@
 <div class="mt5 pb4 bb b--black-10">
-  <h2><a name="{{ .Get "name" }}" href="/talks/trust/index.html" target="_blank">{{ .Get "title" }}</a></h2>
+  <h2><a name="{{ .Get "name" }}" href="{{ .Get "url" }}" target="_blank">{{ .Get "title" }}</a></h2>
   <p><a href="{{ .Get "url" }}" target="_blank"><img src="{{ .Get "image" }}" alt="{{ i18n "slideshow" . }}" class="shadow-5 dib grow"></a></p>
   <p>{{ .Get "desc" | safeHTML }}</p>
   <div>
