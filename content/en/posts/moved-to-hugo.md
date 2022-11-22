@@ -7,7 +7,6 @@ tags:
 - Django
 - BiDi
 - floss
-draft: true
 summary: >
     This website was generated with
     [a custom static generator](https://github.com/MeirKriheli/statirator/),

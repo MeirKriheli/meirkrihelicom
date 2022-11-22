@@ -7,7 +7,6 @@ tags:
 - Django
 - BiDi
 - floss
-draft: true
 summary: >
     עד לאחרונה האתר היה מבוסס על 
     [מחולל תוכן סטטי שכתבתי](https://github.com/MeirKriheli/statirator/),
