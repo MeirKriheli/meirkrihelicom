@@ -13,12 +13,12 @@ At work we need to JSON serialize large amounts of monitoring data, which
 takes it's toll on the Python app. In addition, JSON is the accepted content
 for Celery, which could use a boost.
 
-So we went shopping for faster JSON library, and settled on
-[orjson](https://github.com/ijl/orjson) - fast and can handle more data
-types than others tested.
+This we've embarked on a search for a faster JSON library, Rust or C++ based. 
+Eventually settled on [orjson](https://github.com/ijl/orjson) - fast and can
+handle more data types than others tested.
 
-Following the CI and regression tests started to fail. Turns out we have large
-numbers (<64bits) in our monitoring data, which triggers a 
+Following the change, CI and regression tests started to fail. Turns out we
+use large numbers (>64 bits) in our monitoring data, which triggers a
 [serialization failure](https://github.com/ijl/orjson/issues/116).
 
 
@@ -87,6 +87,6 @@ Summary:
 
 We'll have to stay with built-in `json` as dates and large numbers are
 passed around. `orjson` will probably be utilized at selected
-endpoints, where we can ensure large numbers are not in use, but we won't 
+endpoints, where we can ensure large numbers are not in use. Sadly it won't 
 improve the heavy monitoring endpoints.
 
