@@ -1,0 +1,305 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>HTML Over The Wire</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/sky.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+
+    <style>
+    .with-shadow {
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      border-radius: 10pt;
+    }
+    </style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+          <h1>HTML Over the wire</h1>
+          <h3>PyWeb-IL 101</h3>
+        </section>
+        <section>
+          <h2>Relevant background for this talk</h2>
+          <p>Developer &gt; 35 years</p>
+          <p>Multiple languages, frameworks, paradigms</p>
+          <p>Work with most of the tools mentioned below</p>
+          <p>Handled frameworks, tooling &amp; testing migrations</p>
+        </section>
+				<section>
+          <section>
+            <h2>Frontend's lost decade</h2>
+            <img src="./lost-decacde.png" alt="Tweet about frontend's lost decade" class="with-shadow">
+            <p class="fragment fade-up">Yep, an opinionated and philosophic rant</p>
+          </section>
+          <section>
+            <h2>Javascript 😠</h2>
+            <p>In the old days (some goes into today):</p>
+            <ul>
+              <li class="fragment">No stdlib</li>
+              <li class="fragment">No standard import mechanism</li>
+              <li class="fragment">Global scope by default for variables</li>
+              <li class="fragment">Wonky numbers handling (integers &gt;2<sup>53</sup>)</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Thus leading to</h2>
+            <ul>
+              <li class="fragment">Relying on lots 3rd party libs (like <code>lodash</code>, <code>moment/day.js</code>)</li>
+              <li class="fragment">CommonJS and ES Modules</li>
+              <li class="fragment">Ever increasing downloaded code size</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Evolving</h2>
+            <ul>
+              <li class="fragment">New features not supported yet, Babel and friends</li>
+              <li class="fragment">TypeScript will save us</li>
+              <li class="fragment">OMG, we need ....</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Build Tools</h2>
+            <div class="r-stack">
+              <div class="fragment fade-in-then-out r-fit-text">CodeKit</div>
+              <div class="fragment fade-in-then-out r-fit-text">Grunt &amp; Bower</div>
+              <div class="fragment fade-in-then-out r-fit-text">Gulp &amp; Browserify</div>
+              <div class="fragment fade-in-then-out r-fit-text">Webpack</div>
+              <div class="fragment fade-in-then-out r-fit-text">ESBuild</div>
+              <div class="fragment fade-in-then-out r-fit-text">Rollup</div>
+              <div class="fragment fade-in-then-out r-fit-text">Vite</div>
+              <div class="fragment r-fit-text">Aaaaaaaarrrgh<br>👿</div>
+            </div>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h2>Give me Interactive</h2>
+            <p>Yay! we got AJAX</p>
+            <p>Users can't wait for full page refresh</p>
+            <p> 👇 </p>
+          </section>
+          <section>
+            <p>JQuery &amp; Mootools FTW</p>
+            <p>But we need it to resemble an application</p>
+            <p> 👇 </p>
+          </section>
+          <section>
+            <h2>SPA, yeah baby</h2>
+            <div class="r-stack">
+              <div class="fragment fade-in-then-out r-fit-text">Backbone</div>
+              <div class="fragment fade-in-then-out r-fit-text">Dojo</div>
+              <div class="fragment fade-in-then-out r-fit-text">ExtJS</div>
+              <div class="fragment fade-in-then-out r-fit-text">Ember.JS</div>
+              <div class="fragment fade-in-then-out r-fit-text">AngularJS</div>
+              <div class="fragment fade-in-then-out r-fit-text">Angular</div>
+              <div class="fragment fade-in-then-out r-fit-text">React</div>
+              <div class="fragment fade-in-then-out r-fit-text">Vue.js</div>
+              <div class="fragment r-fit-text">Please make it stop<br>😢</div>
+            </div>
+          </section> 
+        </section>
+
+        <section>
+          <section>
+            <h2>SPA</h2>
+            Yep, we got it, now what?
+          </section>
+          <section>
+            <h2>Validations</h2>
+            <p>Need to validate both on client side and server side</p>
+            <p>Duplicate code and effort</p>
+          </section>
+          <section>
+            <h2>REST</h2>
+            <p class="fragment">Needs to support the SPA</p>
+            <p class="fragment">Ends up matching app needs instead of proper REST</p>
+            <p class="fragment">Often need multiple queries to serve a single UI function</p>
+            <p class="fragment">GraphQL FTW? N+1, needs more complex tooling, heavier load on the backend</p>
+          </section>
+          <section>
+            <h2>SEO</h2>
+            <p class="fragment">What do you mean no SEO?</p>
+            <p class="fragment">SSR</p>
+            <p class="fragment">Hydration</p>
+          </section>
+          <section>
+            <h2>State</h2>
+            <p>Hmm, need to manage state and app data</p>
+            <p class="fragment">Redux, Mobx, Vuex (past), Pinia (present)
+          </section>
+          <section>
+            <h2>What happened to the URLs?</h2>
+            <p class="fragment">Can't share links</p>
+            <p class="fragment">Need to implement a routing solution</p>
+            <p class="fragment">Representing all the options via Router and re-usable links is a hassle</p>
+            <p class="fragment">Broken navigation (back button)</p>
+          </section>
+          <section>
+            <h2>Leading to</h2>
+            <img src="./wrong-present.png" alt="Bought the wrong thing for a Christmas gift because the URL" class="with-shadow">
+            <p>Yep, he's the co-author of React Router</p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Down the Rabbit hole</h2>
+            <ul>
+              <li class="fragment">A solution introduces additional problems</li>
+              <li class="fragment">Which require other solutions</li>
+              <li class="fragment"><a href="https://dayssincelastjavascriptframework.com/" target="_blank">Faster churn</a></li>
+              <li class="fragment">Harder to start for new developers</li>
+              <li class="fragment">Complex tooling and DevOPS</li>
+              <li class="fragment">Separate &amp; larger teams</li>
+              <li class="fragment">Impedance mismatch - Synchronize between them</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Complexity, Hulk Smash</h2>
+            <img src="./hulk.gif" alt="Hulk smash Puny God" class="with-shadow">
+            <p>Over the years I've learned to value simplicity</p>
+            <p><a href="https://grugbrain.dev/">The Grug Brained Developer</a></p>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <p>Revolutionary Idea:</p>
+            <p>What if <code>HTTP</code> actually served <code>HTML</code>?</p>
+            <p> 💡 </p>
+          </section>
+
+          <section>
+            <ul>
+              <li>Easy to get started</li>
+              <li>Utilizes your existing backend stack</li>
+              <li>No need for separate or larger teams</li>
+              <li>Reduce the need for additional tooling</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>State of mind</h2>
+            <p>Think of breaking the page to parts/partials</p>
+            <p>On some action, do an Ajax request</p>
+            <p>Replace parts of the page with returned HTML content</p>
+          </section>
+
+        </section>
+
+        <section>
+          <h2>The secret sauce?</h2>
+          <ul>
+            <li><a href="https://htmx.org/">htmx</a></li>
+            <li><a href="https://unpoly.com/">Unpoly</a></li>
+            <li><a href="https://turbo.hotwired.dev/">Turbo</a></li>
+          </ul>
+          <p>
+            Combined with <a href="https://alpinejs.dev/">Alpine.js</a>,
+            <a href="https://stimulus.hotwired.dev/">Stimulus</a> or
+            <a href="https://htmx.org/essays/hypermedia-friendly-scripting/">Hypermedia</a>
+          </p>
+        </section>
+
+        <section>
+          <section>
+            <h2>htmx</h2>
+            <p>My favorite of the 3, choose your poison</p>
+            <p>Turns AJAX, CSS Transitions, WebSockets into declarative HTML attributes</p>
+          </section>
+
+          <section>
+            <h2>Quick start</h2>
+            <pre><code>
+&lt;script src=&quot;https://unpkg.com/htmx.org@1.8.4&quot;&gt;&lt;/script&gt;
+&lt;!-- have a button POST a click via AJAX --&gt;
+&lt;button hx-post=&quot;/clicked&quot; hx-swap=&quot;outerHTML&quot;&gt;
+  Click Me
+&lt;/button&gt;
+            </code></pre>
+
+            <ul>
+              <li>When a user clicks on this button</li>
+              <li>Issue an AJAX <code>POST</code> request to <code>/clicked</code></li>
+              <li>Replace the button with the HTML response</li>
+            </ul>
+
+            <p>See <a href="https://htmx.org/examples/">examples</a></p>
+          </section>
+
+          <section>
+            <h2>Some Kool-Aid</h2>
+            <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/3GObi93tjZI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </section>
+
+          <section>
+            <h2>Executive Summary</h2>
+            <ul>
+              <li>Took ~<strong>2 months</strong> (from 21K LOC, mostly JS)</li>
+              <li><strong>No reduction</strong> in the application's UX</li>
+              <li>Reduced the <strong>code size</strong> by <strong>67%</strong></li>
+              <li>Reduced total <strong>JS deps</strong> by <strong>96%</strong> (255 to 9)</li>
+              <li>Reduced <strong>web build time</strong> by <strong>88%</strong> (40 sec 5)</li>
+              <li><strong>First load time-to-interactive</strong> was reduced by <strong>50-60%</strong> (from 2 to 6 seconds to 1 to 2 seconds)</li>
+              <li><strong>Much larger data sets were possible</strong>, react couldn't handle the data</li>
+              <li>Web app <strong>memory usage</strong> reduced by <strong>46%</strong> (75MB to 45MB)</li>
+            </ul>
+          </section>
+
+        </section>
+
+        <section>
+          <h2>Some Python Resources</h2>
+          <ul>
+            <li><a href="https://www.saaspegasus.com/guides/modern-javascript-for-django-developers/htmx-alpine/">Django, HTMX and Alpine.js: Modern websites, JavaScript optional </a></li>
+            <li><a href="https://django-htmx.readthedocs.io/en/latest/">django-htmx</a></li>
+            <li><a href="https://github.com/clokep/django-render-block">django-render-block</a></li>
+            <li><a href="https://github.com/EmilStenstrom/django-components/">django-components</a></li>
+            <li><a href="https://github.com/florimondmanca/asgi-htmx">asgi-htmx</a></li>
+            <li><a href="https://flask-htmx.readthedocs.io/en/latest/quickstart.html">flask-htmx</a></li>
+          </ul>
+        </section>
+
+
+        <section>
+          <h2>OK Boomer, now what?</h2>
+          <p>Not suggesting abolishing FE frameworks</p>
+          <p>Think are they really needed?</p>
+          <p>Be aware of inertia based decisions</p>
+        </section>
+
+        <section>
+          <p>Thanks!</p>
+          <p>Questions? Comments?</p>
+        </section>
+
+
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
