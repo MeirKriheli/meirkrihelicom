@@ -1,6 +1,7 @@
 ---
 title: "Introducing Rusmux"
 date: 2023-04-04T16:35:00+03:00
+slug: introducing-rusmux
 draft: false
 tags: 
 - rust

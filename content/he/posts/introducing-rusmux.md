@@ -2,6 +2,7 @@
 title: "היכרות עם Rusmux"
 date: 2023-04-04T16:35:00+03:00
 draft: false
+slug: introducing-rusmux
 tags: 
 - rust
 - tmux
