@@ -10,7 +10,7 @@ tags:
 summary: >
     After a long hiatus, I'm back translating Django to Hebrew.
 
-    As of Tuesday, Tuesday Aug 15th. the Hebrew translation of `django-core`,
+    As of Tuesday Aug 15th. the Hebrew translation of `django-core`,
     `django-formtools`, `django-contrib-comments` and `django-people` is back at
     100%.  Left out for this cycle again: `django-localflavor` and
     `django-docs` and `djangoproject.com`.
