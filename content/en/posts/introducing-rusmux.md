@@ -5,6 +5,7 @@ slug: introducing-rusmux
 draft: false
 tags: 
 - rust
+- rusmux
 - tmux
 - floss
 summary: >
