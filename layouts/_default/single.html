@@ -69,7 +69,7 @@
       </ul>
       {{ end }}
       <div class="mt6 instapaper_ignoref">
-      {{ if .Site.DisqusShortname }}
+      {{ if .Site.Config.Services.Disqus.Shortname }}
         {{ partial "disqus.html" . }}
       {{ end }}
       {{ if .Site.Params.commentoEnable }}
