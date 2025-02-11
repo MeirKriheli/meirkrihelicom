@@ -1,7 +1,7 @@
 ---
 title: "שוחררה rusmux 0.6"
 date: 2024-08-28T00:50:51+03:00
-slug: introducing-rusmux
+slug: rusmux-0-6-released
 tags: 
 - rust
 - rusmux
