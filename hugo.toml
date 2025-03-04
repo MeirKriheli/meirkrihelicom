@@ -6,7 +6,9 @@ defaultContentLanguage = 'he'
 SectionPagesMenu = "main"
 googleAnalytics = ""
 enableRobotsTXT = true
-Paginate = 9
+
+[pagination]
+pagerSize = 9
 
 [services]
 [services.disqus]
